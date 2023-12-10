@@ -1,0 +1,8 @@
+CREATE TABLE customer(
+id LONG NOT NULL AUTO_INCREMENT PRIMARY KEY,
+name VARCHAR(255),
+email VARCHAR(255),
+phone VARCHAR(20),
+vehicle_id LONG NOT NULL,
+FOREIGN KEY (vehicle_id) REFERENCES vehicle (id)
+);

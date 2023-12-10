@@ -1,0 +1,32 @@
+package com.carwash.enumeration;
+
+public enum BrandEnum {
+    VOLKSWAGEN,
+    CHEVROLET,
+    FORD,
+    FIAT,
+    TOYOTA,
+    HONDA,
+    HYUNDAI,
+    RENAULT,
+    NISSAN,
+    JEEP,
+    PEUGEOT,
+    CITROËN,
+    MERCEDESBENZ,
+    BMW,
+    AUDI,
+    KIA,
+    MITSUBISHI,
+    SUBARU,
+    LANDROVER,
+    JAGUAR,
+    YAMAHASUZUKI,
+    KAWASAKI,
+    HARLEYDAVIDSON,
+    DUCATI,
+    TRIUMPH,
+    KTM,
+    ROYALENFIELD,
+    OTHER
+}
