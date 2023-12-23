@@ -1,13 +1,17 @@
-package com.carwash.entity;
+package com.carwash.entities;
 
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
 
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@Data
+@Table(name = "customer")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class Customer {
     @Id
@@ -22,6 +26,6 @@ public class Customer {
     @Column(name = "phone")
     private String phoneNumber;
 
-    @OneToMany
-    private List<Vehicle> vehicle;
+    @OneToMany(mappedBy = "customer")
+    private List<Vehicle> vehicles;
 }

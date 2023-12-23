@@ -1,17 +1,21 @@
-package com.carwash.entity;
+package com.carwash.entities;
 
-import com.carwash.enumeration.WashStatusEnum;
-import com.carwash.enumeration.WashTypeEnum;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import com.carwash.entities.enumerations.WashStatusEnum;
+import com.carwash.entities.enumerations.WashTypeEnum;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
-@Data
+@Table(name = "service_order")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class ServiceOrder {
     @Id
@@ -19,7 +23,7 @@ public class ServiceOrder {
     @EqualsAndHashCode.Include
     private Long id;
 
-    @OneToOne(mappedBy = "customer_id")
+    @ManyToOne
     private Customer customer;
 
     @Column(name = "date")

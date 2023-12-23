@@ -1,15 +1,22 @@
-package com.carwash.entity;
+package com.carwash.entities;
 
-import com.carwash.enumeration.BrandEnum;
-import com.carwash.enumeration.CarModelEnum;
-import com.carwash.enumeration.CategoryEnum;
-import com.carwash.enumeration.ColorEnum;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import com.carwash.entities.enumerations.BrandEnum;
+import com.carwash.entities.enumerations.CarModelEnum;
+import com.carwash.entities.enumerations.CategoryEnum;
+import com.carwash.entities.enumerations.ColorEnum;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-@Data
+import java.util.List;
+
+@Getter
+@Setter
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Entity
+@Table(name = "vehicle")
 public class Vehicle {
 
     @Id
@@ -35,4 +42,8 @@ public class Vehicle {
     @Enumerated(EnumType.STRING)
     @NotNull
     private CategoryEnum category;
+
+    @ManyToOne
+    private Customer customer;
+
 }

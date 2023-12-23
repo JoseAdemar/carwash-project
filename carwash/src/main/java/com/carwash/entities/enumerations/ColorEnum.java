@@ -1,4 +1,4 @@
-package com.carwash.enumeration;
+package com.carwash.entities.enumerations;
 
 public enum ColorEnum {
 
