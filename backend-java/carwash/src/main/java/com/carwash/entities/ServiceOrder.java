@@ -3,15 +3,7 @@ package com.carwash.entities;
 import com.carwash.entities.enumerations.WashStatusEnum;
 import com.carwash.entities.enumerations.WashTypeEnum;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Id;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Column;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.EnumType;
+import jakarta.persistence.*;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -23,6 +15,7 @@ import lombok.EqualsAndHashCode;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -40,6 +33,12 @@ public class ServiceOrder {
 
     @ManyToOne
     private Customer customer;
+
+    @ManyToMany
+    @JoinTable(name = "service_order_vehicle",
+    joinColumns = @JoinColumn(name = "service_order_id"),
+    inverseJoinColumns = @JoinColumn(name = "vehicle_id"))
+    private List<Vehicle> vehicles;
 
     @Column(name = "date")
     private LocalDateTime localDateTime;

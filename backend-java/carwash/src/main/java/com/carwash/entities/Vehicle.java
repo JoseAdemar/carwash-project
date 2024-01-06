@@ -5,15 +5,7 @@ import com.carwash.entities.enumerations.CarModelEnum;
 import com.carwash.entities.enumerations.CategoryEnum;
 import com.carwash.entities.enumerations.ColorEnum;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Id;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Column;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.EnumType;
+import jakarta.persistence.*;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
@@ -22,6 +14,8 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -58,5 +52,8 @@ public class Vehicle {
 
     @ManyToOne
     private Customer customer;
+
+    @ManyToMany(mappedBy = "vehicles")
+    private List<ServiceOrder> serviceOrders;
 
 }

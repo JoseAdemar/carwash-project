@@ -13,11 +13,22 @@ create table customer (
         date datetime(6),
         wash_status varchar(255) not null,
         wash_type varchar(255) not null,
-        customer_id bigint,
         primary key (id),
+        customer_id bigint,
         foreign key (customer_id)
-        references customer (id)
+        references customer (id),
+        vehicle_id bigint,
+        foreign key (vehicle_id)
+        references vehicle(id)
     ) engine=InnoDB;
+
+    CREATE TABLE service_order_vehicle (
+        service_order_id BIGINT,
+        vehicle_id BIGINT,
+        PRIMARY KEY (service_order_id, vehicle_id),
+        FOREIGN KEY (service_order_id) REFERENCES service_order(id),
+        FOREIGN KEY (vehicle_id) REFERENCES vehicle(id)
+    )engine=InnoDB;
 
     
     create table vehicle (
