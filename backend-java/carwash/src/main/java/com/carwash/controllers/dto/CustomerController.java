@@ -1,15 +1,16 @@
 package com.carwash.controllers.dto;
 
 import com.carwash.controllers.dto.dto.CustomerDto;
+import com.carwash.entities.Customer;
 import com.carwash.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/customers")
@@ -24,7 +25,29 @@ public class CustomerController {
     }
 
     @GetMapping("/{id}")
-    public CustomerDto getCustomerDtoById(@PathVariable("id") Long id){
-       return customerService.getCustomerDtoById(id);
+    public ResponseEntity<CustomerDto> getCustomerDtoById(@PathVariable("id") Long id) {
+        CustomerDto customerDto = customerService.getCustomerDtoById(id);
+        if (customerDto != null) {
+            return ResponseEntity.ok(customerDto);
+        }
+        return ResponseEntity.notFound().build();
+    }
+
+    @PostMapping
+    public ResponseEntity<CustomerDto> saveCustomerDto(@RequestBody CustomerDto customerDto) {
+        customerService.saveCustomer(customerDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(customerDto);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<CustomerDto> updateCustomerDto(@PathVariable("id") Long id, @RequestBody CustomerDto customerDto) {
+        customerService.updateCustomer(id, customerDto);
+        return ResponseEntity.status(HttpStatus.OK).body(customerDto);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<CustomerDto> deleteCustomerDto(@PathVariable("id") Long id) {
+        customerService.deleteCustomer(id);
+        return ResponseEntity.noContent().build();
     }
 }
