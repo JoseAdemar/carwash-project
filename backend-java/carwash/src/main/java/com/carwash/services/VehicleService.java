@@ -8,8 +8,10 @@ import com.carwash.exceptions.ResourceStorageException;
 import com.carwash.repositories.VehicleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -23,6 +25,7 @@ public class VehicleService {
         return VehicleReadDTO.getVehicleReadDTO(foundVehicle);
     }
 
+    @Transactional(readOnly = true)
     public List<VehicleReadDTO> findVehicles() {
         List<Vehicle> vehicles = vehicleRepository.findAll();
         if (vehicles.isEmpty()) {
@@ -31,6 +34,7 @@ public class VehicleService {
         return vehicles.stream().map(VehicleReadDTO::getVehicleReadDTO).collect(Collectors.toList());
     }
 
+    @Transactional
     public VehicleReadDTO createVehicle(VehicleCreateDTO vehicleCreateDTO) {
         Vehicle savedVehicle = getEntityFromDTO(vehicleCreateDTO);
         try {
@@ -46,6 +50,7 @@ public class VehicleService {
         vehicleRepository.deleteById(vehicleFound.getId());
     }
 
+    @Transactional(readOnly = true)
     private Vehicle getVehicleById(Long vehicleId) {
         return vehicleRepository.findById(vehicleId).orElseThrow(() -> new ResourceNotFoundException("Vehicle not found for id = " + vehicleId));
     }
@@ -59,5 +64,33 @@ public class VehicleService {
                 .category(vehicleCreateDTO.category())
                 .customer(vehicleCreateDTO.customer())
                 .build();
+    }
+
+    public VehicleReadDTO updateVehicle(Long vehicleId, VehicleCreateDTO vehicleCreateDTO) {
+        Vehicle foundVehicle = getVehicleById(vehicleId);
+        copyFromDTOToEntity(foundVehicle, vehicleCreateDTO);
+        foundVehicle = vehicleRepository.save(foundVehicle);
+        return VehicleReadDTO.getVehicleReadDTO(foundVehicle);
+    }
+
+    private void copyFromDTOToEntity(Vehicle foundVehicle, VehicleCreateDTO vehicleCreateDTO) {
+        if (Objects.nonNull(vehicleCreateDTO.licensePlate())) {
+            foundVehicle.setLicensePlate(vehicleCreateDTO.licensePlate());
+        }
+        if (Objects.nonNull(vehicleCreateDTO.brand())) {
+            foundVehicle.setBrand(vehicleCreateDTO.brand());
+        }
+        if (Objects.nonNull(vehicleCreateDTO.model())) {
+            foundVehicle.setModel(vehicleCreateDTO.model());
+        }
+        if (Objects.nonNull(vehicleCreateDTO.color())) {
+            foundVehicle.setColor(vehicleCreateDTO.color());
+        }
+        if (Objects.nonNull(vehicleCreateDTO.category())) {
+            foundVehicle.setCategory(vehicleCreateDTO.category());
+        }
+        if (Objects.nonNull(vehicleCreateDTO.customer())) {
+            foundVehicle.setCustomer(vehicleCreateDTO.customer());
+        }
     }
 }

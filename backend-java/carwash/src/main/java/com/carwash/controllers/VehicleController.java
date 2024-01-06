@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -43,6 +44,12 @@ public class VehicleController {
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(createdVehicle.getId())
                 .toUri();
         return ResponseEntity.created(uri).body(createdVehicle);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<VehicleReadDTO> updateVehicle(@PathVariable("id") Long vehicleId, @RequestBody @Valid VehicleCreateDTO vehicleCreateDTO){
+        VehicleReadDTO updatedVehicle = vehicleService.updateVehicle(vehicleId, vehicleCreateDTO);
+        return ResponseEntity.ok(updatedVehicle);
     }
 
     @DeleteMapping("/{id}")
