@@ -1,4 +1,4 @@
-package com.carwash.controllers.dto.dto;
+package com.carwash.controllers.dtos;
 
 import com.carwash.entities.Vehicle;
 import jakarta.persistence.*;
