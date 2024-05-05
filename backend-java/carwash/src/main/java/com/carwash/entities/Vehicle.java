@@ -53,7 +53,4 @@ public class Vehicle {
     @ManyToOne
     private Customer customer;
 
-    @ManyToMany(mappedBy = "vehicles")
-    private List<ServiceOrder> serviceOrders;
-
 }

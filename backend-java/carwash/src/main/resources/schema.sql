@@ -22,15 +22,14 @@ create table customer (
         references vehicle(id)
     ) engine=InnoDB;
 
-    CREATE TABLE service_order_vehicle (
-        service_order_id BIGINT,
-        vehicle_id BIGINT,
-        PRIMARY KEY (service_order_id, vehicle_id),
-        FOREIGN KEY (service_order_id) REFERENCES service_order(id),
-        FOREIGN KEY (vehicle_id) REFERENCES vehicle(id)
-    )engine=InnoDB;
+    --CREATE TABLE service_order_vehicle (
+       -- service_order_id BIGINT,
+        --vehicle_id BIGINT,
+        --PRIMARY KEY (service_order_id, vehicle_id),
+        --FOREIGN KEY (service_order_id) REFERENCES service_order(id),
+        --FOREIGN KEY (vehicle_id) REFERENCES vehicle(id)
+    --)engine=InnoDB;
 
-    
     create table vehicle (
        id bigint not null auto_increment,
         brand varchar(255) not null,

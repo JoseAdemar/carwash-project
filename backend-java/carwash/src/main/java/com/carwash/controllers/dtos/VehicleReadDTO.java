@@ -33,6 +33,7 @@ public class VehicleReadDTO {
                 .licensePlate(vehicle.getLicensePlate())
                 .brand(vehicle.getBrand())
                 .color(vehicle.getColor())
+                .model(vehicle.getModel())
                 .category(vehicle.getCategory())
                 .customer(vehicle.getCustomer())
                 .build();

@@ -37,10 +37,7 @@ public class ServiceOrder {
     @ManyToOne
     private Customer customer;
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(name = "service_order_vehicle",
-    joinColumns = @JoinColumn(name = "service_order_id"),
-    inverseJoinColumns = @JoinColumn(name = "vehicle_id"))
+    @OneToMany
     private Set<Vehicle> vehicles;
 
     @Column(name = "date")
@@ -53,5 +50,5 @@ public class ServiceOrder {
     @Enumerated(EnumType.STRING)
     private WashTypeEnum washType;
 
-    private BigDecimal bigDecimal;
+    private BigDecimal price;
 }

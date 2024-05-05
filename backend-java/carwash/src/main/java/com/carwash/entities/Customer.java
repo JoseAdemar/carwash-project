@@ -37,7 +37,4 @@ public class Customer {
 
     @Column(name = "phone")
     private String phoneNumber;
-
-    @OneToMany(mappedBy = "customer")
-    private List<Vehicle> vehicles;
 }
