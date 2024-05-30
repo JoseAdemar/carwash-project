@@ -6,22 +6,32 @@ import com.carwash.entities.enumerations.WashStatusEnum;
 import com.carwash.entities.enumerations.WashTypeEnum;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.Data;
+import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class ServiceOrderDto {
 
-    private CustomerDto customer;
+    private Long id;
 
-    private Set<VehicleCreateDTO> vehicles;
+    private Customer customer;
+
+    private List<Vehicle> vehicles;
 
     private WashStatusEnum washStatus;
 
     private WashTypeEnum washType;
 
-    private BigDecimal bigDecimal;
+    private BigDecimal price;
+
+    private LocalDateTime localDateTime;
 }

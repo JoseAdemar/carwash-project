@@ -52,7 +52,8 @@ public class VehicleService {
 
     @Transactional(readOnly = true)
     private Vehicle getVehicleById(Long vehicleId) {
-        return vehicleRepository.findById(vehicleId).orElseThrow(() -> new ResourceNotFoundException("Vehicle not found for id = " + vehicleId));
+        return vehicleRepository.findById(vehicleId).orElseThrow(() -> new ResourceNotFoundException
+                ("Vehicle not found for id = " + vehicleId));
     }
 
     private Vehicle getEntityFromDTO(VehicleCreateDTO vehicleCreateDTO) {

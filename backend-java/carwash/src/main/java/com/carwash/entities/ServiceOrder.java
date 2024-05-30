@@ -37,8 +37,13 @@ public class ServiceOrder {
     @ManyToOne
     private Customer customer;
 
-    @OneToMany
-    private Set<Vehicle> vehicles;
+    @ManyToMany
+    @JoinTable(
+            name = "service_order_vehicle",
+            joinColumns = @JoinColumn(name = "service_order_id"),
+            inverseJoinColumns = @JoinColumn(name = "vehicles_id")
+    )
+    private List<Vehicle> vehicles;
 
     @Column(name = "date")
     @CreationTimestamp
