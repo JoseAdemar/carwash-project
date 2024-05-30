@@ -3,26 +3,22 @@ package com.carwash.entities;
 import com.carwash.entities.enumerations.WashStatusEnum;
 import com.carwash.entities.enumerations.WashTypeEnum;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
-import jakarta.persistence.Id;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Column;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.Enumerated;
-import jakarta.persistence.EnumType;
+import jakarta.persistence.*;
 
 import jakarta.validation.constraints.NotNull;
+import jdk.jfr.Timestamp;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
 
 @Getter
 @Setter
@@ -41,17 +37,23 @@ public class ServiceOrder {
     @ManyToOne
     private Customer customer;
 
+    @ManyToMany
+    @JoinTable(
+            name = "service_order_vehicle",
+            joinColumns = @JoinColumn(name = "service_order_id"),
+            inverseJoinColumns = @JoinColumn(name = "vehicles_id")
+    )
+    private List<Vehicle> vehicles;
+
     @Column(name = "date")
+    @CreationTimestamp
     private LocalDateTime localDateTime;
 
     @Enumerated(EnumType.STRING)
-    @NotNull
     private WashStatusEnum washStatus;
 
     @Enumerated(EnumType.STRING)
-    @NotNull
     private WashTypeEnum washType;
 
-    @NotNull
-    private BigDecimal bigDecimal;
+    private BigDecimal price;
 }

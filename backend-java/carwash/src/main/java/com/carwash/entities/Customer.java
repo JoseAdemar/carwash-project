@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Column;
 import jakarta.persistence.OneToMany;
 
+import jakarta.validation.constraints.Email;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.Builder;
@@ -37,7 +38,4 @@ public class Customer {
 
     @Column(name = "phone")
     private String phoneNumber;
-
-    @OneToMany(mappedBy = "customer")
-    private List<Vehicle> vehicles;
 }
