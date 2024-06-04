@@ -17,5 +17,5 @@ public interface CustomerRepository extends JpaRepository<Customer, Long> {
     Optional<Customer> findByEmail(@Param("email") String email);
 
     @Query("SELECT c FROM Customer c WHERE c.name LIKE %:name%")
-    List<Customer> findByName(@Param("name") String name, PageRequest pageRequest);
+    List<Customer> findByName(@Param("name") String name);
 }

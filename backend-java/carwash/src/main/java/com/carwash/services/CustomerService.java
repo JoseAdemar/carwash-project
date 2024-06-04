@@ -8,9 +8,11 @@ import com.carwash.repositories.CustomerRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -54,30 +56,42 @@ public class CustomerService {
     }
 
     public Optional<CustomerDto> findByName(String name) {
-        Customer customer = customerRepository.findByName(name, PageRequest.of(0, 1))
-                .stream()
-                .findFirst()
-                .orElseThrow(() -> new ResourceNotFoundException("Nenhum dado encontrado na pesquisa"));
-        CustomerDto customerDto = new CustomerDto();
-        BeanUtils.copyProperties(customer, customerDto);
-        return Optional.of(customerDto);
+        if (name != null & !name.strip().isBlank()) {
+            final long maxOneCustomer = 1;
+            Customer customer = customerRepository.findByName(name).stream().limit(maxOneCustomer).findFirst()
+                    .orElseThrow(() -> new ResourceNotFoundException("Nenhum dado encontrado na pesquisa"));
+
+            CustomerDto customerDto = new CustomerDto();
+            BeanUtils.copyProperties(customer, customerDto);
+            return Optional.of(customerDto);
+        } else {
+            throw new IllegalArgumentException(String.format("O valor não pode ser null ou vazio"));
+        }
     }
 
     public Optional<CustomerDto> findByEmail(String email) {
-        Customer customer = customerRepository.findByEmail(email)
-                .stream().findFirst().orElseThrow(() ->
-                        new ResourceNotFoundException(String.format("Busca referente ao email %s não encontrada", email)));
-        CustomerDto customerDto = new CustomerDto();
-        BeanUtils.copyProperties(customer, customerDto);
-        return Optional.of(customerDto);
+        if (email != null && !email.strip().isBlank()) {
+            Customer customer = customerRepository.findByEmail(email)
+                    .stream().findFirst().orElseThrow(() ->
+                            new ResourceNotFoundException(String.format("Busca referente ao email %s não encontrada", email)));
+            CustomerDto customerDto = new CustomerDto();
+            BeanUtils.copyProperties(customer, customerDto);
+            return Optional.of(customerDto);
+        } else {
+            throw new IllegalArgumentException(String.format("O valor não pode ser null ou vazio"));
+        }
     }
 
     public CustomerDto getCustomerDtoById(Long id) {
-        Customer customer = customerRepository.findById(id).orElseThrow(() -> new
-                ResourceNotFoundException(String.format("Id " + id + " Não encontrado")));
-        CustomerDto customerDto = new CustomerDto();
-        BeanUtils.copyProperties(customer, customerDto);
-        return customerDto;
+        if (id != null) {
+            Customer customer = customerRepository.findById(id).orElseThrow(() -> new
+                    ResourceNotFoundException(String.format("Id " + id + " Não encontrado")));
+            CustomerDto customerDto = new CustomerDto();
+            BeanUtils.copyProperties(customer, customerDto);
+            return customerDto;
+        } else {
+            throw new ResourceStorageException("Campo id = " + id + " não é permitido");
+        }
     }
 
     @Transactional
@@ -87,7 +101,7 @@ public class CustomerService {
             BeanUtils.copyProperties(customerDto, customer);
             customerRepository.save(customer);
         } catch (ResourceStorageException e) {
-            throw new ResourceNotFoundException(String.format("Erro interno ao tentar cadastrar usuário"));
+            throw new ResourceStorageException(String.format("Erro interno ao tentar cadastrar usuário"));
         }
     }
 
