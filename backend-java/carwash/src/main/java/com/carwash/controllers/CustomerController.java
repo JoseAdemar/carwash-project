@@ -5,6 +5,7 @@ import com.carwash.exceptions.ResourceNotFoundException;
 import com.carwash.exceptions.ResourceStorageException;
 import com.carwash.services.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +38,8 @@ public class CustomerController {
             return ResponseEntity.ok(customerDto);
         } catch (ResourceNotFoundException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }catch (ResourceStorageException e){
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
