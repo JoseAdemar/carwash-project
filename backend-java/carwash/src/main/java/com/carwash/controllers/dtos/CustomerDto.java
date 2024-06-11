@@ -1,24 +1,26 @@
 package com.carwash.controllers.dtos;
 
-import com.carwash.entities.Vehicle;
-import jakarta.persistence.*;
-import lombok.*;
-
-import java.util.List;
+import jakarta.persistence.Column;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@SuppressWarnings({"checkstyle:MissingJavadocType", "checkstyle:MissingJavadocMethod"})
 public class CustomerDto {
 
-    private Long id;
+  private Long id;
 
-    private String name;
+  private String name;
 
-    private String email;
+  private String email;
 
-    @Column(name = "phone")
+  @Column(name = "phone")
     private String phoneNumber;
 }
