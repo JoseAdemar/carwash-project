@@ -1,33 +1,31 @@
-create table customer (
-        id bigint not null auto_increment,
-        email varchar(255),
-        name varchar(255),
-        phone varchar(255),
-        primary key (id)
+CREATE TABLE customer (
+        id BIGINT NOT NULL AUTO_INCREMENT,
+        email VARCHAR(255),
+        name VARCHAR(255),
+        phone VARCHAR(255),
+        PRIMARY KEY (id)
     ) engine=InnoDB;
 
-    create table vehicle (
-        id bigint not null auto_increment,
-        brand varchar(255) not null,
-        category varchar(255) not null,
-        color varchar(255) not null,
-        license varchar(255),
-        model varchar(255) not null,
-        customer_id bigint,
-        primary key (id),
-        foreign key (customer_id)
-        references customer (id)
+    CREATE TABLE vehicle (
+        id BIGINT NOT NULL AUTO_INCREMENT,
+        brand VARCHAR(255) NOT NULL,
+        category VARCHAR(255) NOT NULL,
+        color VARCHAR(255) NOT NULL,
+        license VARCHAR(255),
+        model VARCHAR(255) NOT NULL,
+        customer_id BIGINT,
+        PRIMARY KEY (id),
+        FOREIGN KEY (customer_id)
+        REFERENCES customer (id)
     ) engine=InnoDB;
 
-    create table service_order (
-        id bigint not null auto_increment,
+    CREATE TABLE service_order (
+        id BIGINT NOT NULL AUTO_INCREMENT,
         date DATETIME,
-        washStatus varchar(255) not null,
-        washType varchar(255) not null,
+        washStatus VARCHAR(255) NOT NULL,
+        washType VARCHAR(255) NOT NULL,
         price DECIMAL(10,2),
-        primary key (id),
-        foreign key (customer_id)
-        references customer (id),
-        foreign key (vehicle_id)
-        references vehicle (id)
+        PRIMARY KEY (id),
+        FOREIGN KEY (vehicle_id)
+        REFERENCES vehicle (id)
     )engine=InnoDB;

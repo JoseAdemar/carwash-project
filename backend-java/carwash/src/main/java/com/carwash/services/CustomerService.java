@@ -16,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -67,20 +68,16 @@ public class CustomerService {
   }
 
   public CustomerDto getById(Long id) {
+    Objects.requireNonNull(id,String.format("Id " + id + " Não é válido"));
     try {
-      if (id != null) {
-        Customer customer = customerRepository.findById(id).orElseThrow(() ->
-                new ResourceNotFoundException(String.format("Id " + id + " Não encontrado")));
-        CustomerDto customerDto = new CustomerDto();
-        BeanUtils.copyProperties(customer, customerDto);
-        return customerDto;
-      } else {
-        throw new BadRequestException("Campo id = " + id + " não é permitido");
-      }
+      Customer customer = customerRepository.findById(id).orElseThrow(() ->
+              new ResourceNotFoundException(String.format("Id %d não encontrado", id)));
+      CustomerDto customerDto = new CustomerDto();
+      BeanUtils.copyProperties(customer, customerDto);
+      return customerDto;
+
     } catch (ResourceNotFoundException e) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
-    } catch (BadRequestException e) {
-      throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
     }
   }
 

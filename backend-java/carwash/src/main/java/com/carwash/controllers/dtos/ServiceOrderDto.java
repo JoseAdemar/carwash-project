@@ -23,8 +23,6 @@ public class ServiceOrderDto {
 
     private Long id;
 
-    private Customer customer;
-
     private List<Vehicle> vehicles;
 
     private WashStatusEnum washStatus;

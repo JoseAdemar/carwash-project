@@ -29,31 +29,28 @@ import java.util.Set;
 @Table(name = "service_order")
 @EqualsAndHashCode(onlyExplicitlyIncluded = true)
 public class ServiceOrder {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @EqualsAndHashCode.Include
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  @EqualsAndHashCode.Include
+  private Long id;
 
-    @ManyToOne
-    private Customer customer;
+  @ManyToMany
+  @JoinTable(
+          name = "service_order_vehicle",
+          joinColumns = @JoinColumn(name = "service_order_id"),
+          inverseJoinColumns = @JoinColumn(name = "vehicles_id")
+  )
+  private List<Vehicle> vehicles;
 
-    @ManyToMany
-    @JoinTable(
-            name = "service_order_vehicle",
-            joinColumns = @JoinColumn(name = "service_order_id"),
-            inverseJoinColumns = @JoinColumn(name = "vehicles_id")
-    )
-    private List<Vehicle> vehicles;
+  @Column(name = "date")
+  @CreationTimestamp
+  private LocalDateTime localDateTime;
 
-    @Column(name = "date")
-    @CreationTimestamp
-    private LocalDateTime localDateTime;
+  @Enumerated(EnumType.STRING)
+  private WashStatusEnum washStatus;
 
-    @Enumerated(EnumType.STRING)
-    private WashStatusEnum washStatus;
+  @Enumerated(EnumType.STRING)
+  private WashTypeEnum washType;
 
-    @Enumerated(EnumType.STRING)
-    private WashTypeEnum washType;
-
-    private BigDecimal price;
+  private BigDecimal price;
 }

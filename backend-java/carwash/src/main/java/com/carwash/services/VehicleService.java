@@ -7,91 +7,104 @@ import com.carwash.exceptions.ResourceNotFoundException;
 import com.carwash.exceptions.ResourceStorageException;
 import com.carwash.repositories.VehicleRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
+@SuppressWarnings({"checkstyle:MissingJavadocType", "checkstyle:MissingJavadocMethod"})
 public class VehicleService {
 
-    private final VehicleRepository vehicleRepository;
+  @Autowired
+  private final VehicleRepository vehicleRepository;
 
-    public VehicleReadDTO findVehicle(Long vehicleId) {
-        Vehicle foundVehicle = getVehicleById(vehicleId);
-        return VehicleReadDTO.getVehicleReadDTO(foundVehicle);
+  @Transactional(readOnly = true)
+  public VehicleReadDTO findById(Long id) {
+    try {
+      Vehicle vehicle = vehicleRepository.findById(id)
+              .orElseThrow(()
+                      -> new ResourceNotFoundException("Veículo não encontrado para o Id = " + id));
+      return VehicleReadDTO.getVehicleReadDTO(vehicle);
+    } catch (ResourceNotFoundException e) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
     }
+  }
 
-    @Transactional(readOnly = true)
-    public List<VehicleReadDTO> findVehicles() {
-        List<Vehicle> vehicles = vehicleRepository.findAll();
-        if (vehicles.isEmpty()) {
-            throw new ResourceNotFoundException("No vehicle was found");
-        }
-        return vehicles.stream().map(VehicleReadDTO::getVehicleReadDTO).collect(Collectors.toList());
+  public VehicleReadDTO findByLicensePlate(String plate) {
+    try {
+      Objects.requireNonNull(plate);
+      Optional<Vehicle> vehicle = (vehicleRepository.findByLicensePlate(plate));
+      return VehicleReadDTO.getVehicleReadDTO(vehicle.get());
+    } catch (NoSuchElementException e) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
+  }
 
-    @Transactional
-    public VehicleReadDTO createVehicle(VehicleCreateDTO vehicleCreateDTO) {
-        Vehicle savedVehicle = getEntityFromDTO(vehicleCreateDTO);
-        try {
-            savedVehicle = vehicleRepository.save(savedVehicle);
-            return VehicleReadDTO.getVehicleReadDTO(savedVehicle);
-        } catch (Exception e) {
-            throw new ResourceStorageException("Unknown problem by saving vehicle");
-        }
+  @Transactional(readOnly = true)
+  public List<VehicleReadDTO> findAll() {
+    try {
+      List<Vehicle> vehicles = vehicleRepository.findAll();
+      if (vehicles.isEmpty()) {
+        throw new ResourceNotFoundException("Nenhum veículo encontrado na busca");
+      }
+      return vehicles.stream().map(VehicleReadDTO::getVehicleReadDTO).collect(Collectors.toList());
+    } catch (ResourceNotFoundException e) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
     }
+  }
 
-    public void deleteVehicle(Long vehicleId) {
-        Vehicle vehicleFound = getVehicleById(vehicleId);
-        vehicleRepository.deleteById(vehicleFound.getId());
+  @Transactional
+  public VehicleReadDTO create(VehicleCreateDTO vehicleCreateDto) {
+    Vehicle vehicle = getEntityFromDto(vehicleCreateDto);
+    try {
+      vehicleRepository.save(vehicle);
+      return VehicleReadDTO.getVehicleReadDTO(vehicle);
+    } catch (ResourceStorageException e) {
+      throw new ResponseStatusException(HttpStatus
+              .INTERNAL_SERVER_ERROR,
+              new ResourceStorageException(String.format("Erro interno ao tentar criar veículo"))
+                      .getMessage());
     }
+  }
 
-    @Transactional(readOnly = true)
-    private Vehicle getVehicleById(Long vehicleId) {
-        return vehicleRepository.findById(vehicleId).orElseThrow(() -> new ResourceNotFoundException
-                ("Vehicle not found for id = " + vehicleId));
-    }
+  private Vehicle getEntityFromDto(VehicleCreateDTO vehicleCreateDto) {
+    Vehicle vehicle = new Vehicle();
+    BeanUtils.copyProperties(vehicleCreateDto, vehicle);
+    return vehicle;
+  }
 
-    private Vehicle getEntityFromDTO(VehicleCreateDTO vehicleCreateDTO) {
-        return Vehicle.builder()
-                .licensePlate(vehicleCreateDTO.licensePlate())
-                .brand(vehicleCreateDTO.brand())
-                .model(vehicleCreateDTO.model())
-                .color(vehicleCreateDTO.color())
-                .category(vehicleCreateDTO.category())
-                .customer(vehicleCreateDTO.customer())
-                .build();
+  public void deleteVehicle(Long id) {
+    try {
+      Vehicle vehicleFound = vehicleRepository.findById(id).orElseThrow(() -> {
+        throw new ResourceNotFoundException("Veículo não encontrado para o Id = " + id);
+      });
+      vehicleRepository.deleteById(vehicleFound.getId());
+    } catch (ResourceNotFoundException e) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
     }
+  }
 
-    public VehicleReadDTO updateVehicle(Long vehicleId, VehicleCreateDTO vehicleCreateDTO) {
-        Vehicle foundVehicle = getVehicleById(vehicleId);
-        copyFromDTOToEntity(foundVehicle, vehicleCreateDTO);
-        foundVehicle = vehicleRepository.save(foundVehicle);
-        return VehicleReadDTO.getVehicleReadDTO(foundVehicle);
+  public VehicleReadDTO update(Long id, VehicleCreateDTO vehicleCreateDtO) {
+    try {
+      Vehicle vehicle = vehicleRepository.findById(id).orElseThrow(() -> {
+        throw new ResourceNotFoundException("Veículo não encontrado para o Id = " + id);
+      });
+      BeanUtils.copyProperties(vehicleCreateDtO, vehicle);
+      vehicle = vehicleRepository.save(vehicle);
+      return VehicleReadDTO.getVehicleReadDTO(vehicle);
+    } catch (ResourceNotFoundException e) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND, e.getMessage());
     }
-
-    private void copyFromDTOToEntity(Vehicle foundVehicle, VehicleCreateDTO vehicleCreateDTO) {
-        if (Objects.nonNull(vehicleCreateDTO.licensePlate())) {
-            foundVehicle.setLicensePlate(vehicleCreateDTO.licensePlate());
-        }
-        if (Objects.nonNull(vehicleCreateDTO.brand())) {
-            foundVehicle.setBrand(vehicleCreateDTO.brand());
-        }
-        if (Objects.nonNull(vehicleCreateDTO.model())) {
-            foundVehicle.setModel(vehicleCreateDTO.model());
-        }
-        if (Objects.nonNull(vehicleCreateDTO.color())) {
-            foundVehicle.setColor(vehicleCreateDTO.color());
-        }
-        if (Objects.nonNull(vehicleCreateDTO.category())) {
-            foundVehicle.setCategory(vehicleCreateDTO.category());
-        }
-        if (Objects.nonNull(vehicleCreateDTO.customer())) {
-            foundVehicle.setCustomer(vehicleCreateDTO.customer());
-        }
-    }
+  }
 }

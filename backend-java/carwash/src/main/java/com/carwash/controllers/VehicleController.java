@@ -5,7 +5,9 @@ import com.carwash.controllers.dtos.VehicleReadDTO;
 import com.carwash.services.VehicleService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,19 +30,25 @@ public class VehicleController {
 
     @GetMapping("/{id}")
     public ResponseEntity<VehicleReadDTO> findVehicle(@PathVariable("id") Long vehicleId){
-        VehicleReadDTO foundVehicle = vehicleService.findVehicle(vehicleId);
+        VehicleReadDTO foundVehicle = vehicleService.findById(vehicleId);
         return ResponseEntity.ok(foundVehicle);
+    }
+
+    @GetMapping("/plate")
+    public ResponseEntity<VehicleReadDTO> findByLicensePlate(@RequestParam(required = false) String plate) {
+        VehicleReadDTO vehicleReadDTO = vehicleService.findByLicensePlate(plate);
+        return ResponseEntity.status(HttpStatus.OK).body(vehicleReadDTO);
     }
 
     @GetMapping
     public ResponseEntity<List<VehicleReadDTO>> findVehicles(){
-        List<VehicleReadDTO> foundVehicles = vehicleService.findVehicles();
+        List<VehicleReadDTO> foundVehicles = vehicleService.findAll();
         return ResponseEntity.ok(foundVehicles);
     }
 
     @PostMapping
     public ResponseEntity<VehicleReadDTO> createVehicle(@RequestBody @Valid VehicleCreateDTO vehicleCreateDTO) {
-        VehicleReadDTO createdVehicle = vehicleService.createVehicle(vehicleCreateDTO);
+        VehicleReadDTO createdVehicle = vehicleService.create(vehicleCreateDTO);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(createdVehicle.getId())
                 .toUri();
         return ResponseEntity.created(uri).body(createdVehicle);
@@ -48,7 +56,7 @@ public class VehicleController {
 
     @PutMapping("/{id}")
     public ResponseEntity<VehicleReadDTO> updateVehicle(@PathVariable("id") Long vehicleId, @RequestBody @Valid VehicleCreateDTO vehicleCreateDTO){
-        VehicleReadDTO updatedVehicle = vehicleService.updateVehicle(vehicleId, vehicleCreateDTO);
+        VehicleReadDTO updatedVehicle = vehicleService.update(vehicleId, vehicleCreateDTO);
         return ResponseEntity.ok(updatedVehicle);
     }
 
