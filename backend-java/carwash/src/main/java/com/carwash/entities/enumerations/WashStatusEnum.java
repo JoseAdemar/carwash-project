@@ -1,9 +1,9 @@
 package com.carwash.entities.enumerations;
 
 public enum WashStatusEnum {
-    WAITING("Waiting"),
-    WASHING("Washing"),
-    FINISHED("Finished");
+    WASHING("Lavando"),
+    FINISHED("Finalizado"),
+    CANCELED("Cancelado");
 
     private String status;
 

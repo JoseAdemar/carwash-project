@@ -47,7 +47,7 @@ public class ServiceOrder {
   private LocalDateTime localDateTime;
 
   @Enumerated(EnumType.STRING)
-  private WashStatusEnum washStatus;
+  private WashStatusEnum washStatus = WashStatusEnum.WASHING;
 
   @Enumerated(EnumType.STRING)
   private WashTypeEnum washType;
