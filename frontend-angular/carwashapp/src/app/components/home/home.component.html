@@ -1,0 +1,53 @@
+<div class="topo-home">
+    <div class="row">
+        <div class="col-md-11 col-sm-12">
+            <h5>CarWash-App <i class="fa-solid fa-car-side"></i></h5>
+        </div>
+        <div class="col-md-1 col-sm-12" routerLink="">
+            <button class="btn btn-secondary" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Sair"><i
+                    class="fa-solid fa-power-off"></i></button>
+        </div>
+    </div>
+</div>
+
+<div class="nav-menus">
+    <div class="row">
+        <div class="col-md-2 col-sm-12">
+            <nav>
+                <ul class="nav flex-column">
+                    <li class="nav-item" routerLink="/app-serviceOrder">
+                        <a class="nav-link active" aria-current="page" href="#">O.S <i
+                                class="fa-solid fa-check"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a (click)="handleClick('customer')" class="nav-link">Cliente <i
+                                class="fa-regular fa-user"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a (click)="handleClick('vehicle')" class="nav-link">Veículo <i class="fa-solid fa-car"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Configurações <i
+                                class="fa-solid fa-wrench"></i></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Relatórios <i
+                                class="fa-solid fa-file-pdf"></i></a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+        <div class="div-exibicao-corpo" class="col-md-10 col-sm-12">
+            <div>
+                <div [ngClass]="{ 'desabilita': activeDiv !== 'customer' }" class="corpo-home-customer">
+                    <app-customer></app-customer>
+                </div>
+            </div>
+            <div>
+                <div [ngClass]="{ 'desabilita': activeDiv !== 'vehicle' }" class="corpo-home-vehicle">
+                    <app-vehicle></app-vehicle>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

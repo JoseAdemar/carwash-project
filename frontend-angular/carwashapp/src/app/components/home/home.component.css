@@ -1,0 +1,32 @@
+.topo-home{
+    background-color: rgb(126, 135, 132);
+    padding: 20px;
+    color: rgb(255, 255, 255);
+}
+.nav-menus li{
+    background-color: rgb(16, 16, 16);
+}
+
+.nav-menus nav li a{
+    color: white;
+}
+
+.nav-menus nav li a:hover{
+    color: white;
+    cursor: pointer;
+    background-color: rgb(24, 4, 239);
+}
+
+.corpo-home-customer {
+    margin: 0px; 
+    padding: 15px; 
+}
+
+.corpo-home-vehicle{
+    margin: 0px; 
+    padding: 15px; 
+}
+
+.desabilita{
+    display: none;
+}
