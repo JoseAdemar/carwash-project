@@ -1,0 +1,26 @@
+.titulo-os{
+  margin-top: 15px;
+  margin-left: 15px;
+}
+.campos-form .form-floating {
+  margin-bottom: 15px; 
+}
+
+.campos-form .selecoes .form-select{
+ margin-top: 20px;
+ padding: 16px;
+}
+
+.campos-form button{
+  margin-top: 15px;
+}
+
+.valor-data{
+  margin-top: 17px;
+}
+
+.carro-descricao{
+  background-color: rgb(78, 78, 235);
+  color: beige;
+  padding-left: 12px;
+}

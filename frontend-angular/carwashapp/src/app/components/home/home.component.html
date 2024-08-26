@@ -15,8 +15,8 @@
         <div class="col-md-2 col-sm-12">
             <nav>
                 <ul class="nav flex-column">
-                    <li class="nav-item" routerLink="/app-serviceOrder">
-                        <a class="nav-link active" aria-current="page" href="#">O.S <i
+                    <li class="nav-item">
+                        <a (click)="handleClick('os')" class="nav-link active" aria-current="page">O.S <i
                                 class="fa-solid fa-check"></i></a>
                     </li>
                     <li class="nav-item">
@@ -46,6 +46,11 @@
             <div>
                 <div [ngClass]="{ 'desabilita': activeDiv !== 'vehicle' }" class="corpo-home-vehicle">
                     <app-vehicle></app-vehicle>
+                </div>
+            </div>
+            <div>
+                <div [ngClass]="{ 'desabilita': activeDiv !== 'os' }" class="corpo-home-os">
+                    <app-os></app-os>
                 </div>
             </div>
         </div>

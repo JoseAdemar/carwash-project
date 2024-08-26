@@ -2,18 +2,20 @@
   <h5>Tela cadastro de clientes</h5>
 </div>
 
+<form (ngSubmit)="onSubmit()"> 
 <div class="campos-form">
   <div class="form-floating mb-3">
-    <input type="nome" class="form-control" id="floatingInput" placeholder="nome" />
-    <label for="floatingInput">Nome</label>
+    <input type="text" [(ngModel)]="customer.name" name="name" class="form-control" id="name" placeholder="nome" />
+    <label for="name">Nome</label>
   </div>
   <div class="form-floating">
-    <input type="E-mail" class="form-control" id="floatingInput" placeholder="e-mail" />
-    <label for="floatingInput">E-mail</label>
+    <input type="text" [(ngModel)]="customer.email" name="email" class="form-control" id="email" placeholder="e-mail" />
+    <label for="email">E-mail</label>
   </div>
   <div class="form-floating">
-    <input type="Phone" class="form-control" id="floatingInput" placeholder="Phone" />
-    <label for="floatingInput">Telefone</label>
+    <input type="text" [(ngModel)]="customer.phoneNumber" name="phoneNumber" class="form-control" id="phoneNumber" placeholder="Phone" />
+    <label for="phoneNumber">Telefone</label>
   </div>
-  <button type="button" class="btn btn-primary">Cadastrar</button>
+  <button type="submit" class="btn btn-primary">Cadastrar</button>
 </div>
+</form>
