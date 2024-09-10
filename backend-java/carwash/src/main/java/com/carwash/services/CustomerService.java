@@ -6,11 +6,10 @@ import com.carwash.exceptions.ResourceNotFoundException;
 import com.carwash.exceptions.ResourceStorageException;
 import com.carwash.repositories.CustomerRepository;
 import jakarta.transaction.Transactional;
-import org.apache.coyote.BadRequestException;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -20,7 +19,6 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@SuppressWarnings({"checkstyle:MissingJavadocType", "checkstyle:MissingJavadocMethod"})
 @Service
 public class CustomerService {
   @Autowired
@@ -28,7 +26,8 @@ public class CustomerService {
 
   public List<CustomerDto> findAll() {
     try {
-      List<Customer> customers = customerRepository.findAll();
+      Sort sort = Sort.by(Sort.Order.desc("id"));
+      List<Customer> customers = customerRepository.findAll(sort);
       if (customers.isEmpty()) {
         throw new ResourceNotFoundException(
                 new ArrayList<>() + "Nenhum cliente encontrado na busca");
@@ -68,7 +67,7 @@ public class CustomerService {
   }
 
   public CustomerDto getById(Long id) {
-    Objects.requireNonNull(id,String.format("Id " + id + " Não é válido"));
+    Objects.requireNonNull(id, String.format("Id " + id + " Não é válido"));
     try {
       Customer customer = customerRepository.findById(id).orElseThrow(() ->
               new ResourceNotFoundException(String.format("Id %d não encontrado", id)));

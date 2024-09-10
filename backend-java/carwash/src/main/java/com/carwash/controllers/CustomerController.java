@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 import java.util.Optional;
 
-@SuppressWarnings({"checkstyle:MissingJavadocType", "checkstyle:MissingJavadocMethod"})
 @RestController
 @RequestMapping("/customers")
 public class CustomerController {

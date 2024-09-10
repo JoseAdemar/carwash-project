@@ -1,3 +1,60 @@
 .campos-form .form-floating {
-  margin-bottom: 15px; 
+  margin-bottom: 15px;
 }
+
+.sucesso button {
+  text-align: right;
+  font-size: 30px;
+  background: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.sucesso p {
+  margin-left: 15px;
+  font-size: 16px;
+}
+
+.alert-success {
+  margin: 0;
+  padding: 0;
+}
+
+.message-sucess p{
+  margin-left: 20px;
+  margin-top: 10px;
+}
+
+.is-invalid {
+  color: rgb(245, 3, 3);
+}
+
+.customer-form-table .fa-trash-can{
+  cursor: pointer;
+  color: rgb(165, 162, 162);
+}
+
+.customer-form-table .fa-pen-to-square{
+  cursor: pointer;
+  color: rgb(133, 231, 161);
+}
+
+.espaco-botao:last-child {
+  margin-left: 30px;
+}
+
+.customer-button .btn .btn-primary{
+  display: flex;
+  gap: 10px;
+}
+
+.customer-button {
+  display: flex;
+  padding: 0px; 
+  margin: 0px; 
+  height: 45px; 
+  line-height: 20px; 
+  gap: 10px;
+}
+

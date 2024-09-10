@@ -2,20 +2,192 @@
   <h5>Tela cadastro de clientes</h5>
 </div>
 
-<form (ngSubmit)="onSubmit()"> 
-<div class="campos-form">
-  <div class="form-floating mb-3">
-    <input type="text" [(ngModel)]="customer.name" name="name" class="form-control" id="name" placeholder="nome" />
-    <label for="name">Nome</label>
-  </div>
-  <div class="form-floating">
-    <input type="text" [(ngModel)]="customer.email" name="email" class="form-control" id="email" placeholder="e-mail" />
-    <label for="email">E-mail</label>
-  </div>
-  <div class="form-floating">
-    <input type="text" [(ngModel)]="customer.phoneNumber" name="phoneNumber" class="form-control" id="phoneNumber" placeholder="Phone" />
-    <label for="phoneNumber">Telefone</label>
-  </div>
-  <button type="submit" class="btn btn-primary">Cadastrar</button>
+<div
+  *ngIf="isCustomerPersistWithSucess || isError"
+  class="alert message-sucess"
+  [ngClass]="{
+    'alert-success': isCustomerPersistWithSucess,
+    'alert-danger': isError
+  }"
+  role="alert"
+>
+  <p>{{ isCustomerPersistWithSucess || isError ? messageSucess : '' }}</p>
 </div>
+
+<form (ngSubmit)="submitForm()">
+  <div class="campos-form">
+    <div [hidden]="true" class="form-floating mb-3">
+      <input
+        type="text"
+        [(ngModel)]="customer.id"
+        name="id"
+        class="form-control"
+        id="id"
+        placeholder="id"
+      />
+      <label for="name">id</label>
+      <div *ngIf="customer.id == 0" class="text-danger">
+        <span>* {{ messageErroInput }}</span>
+      </div>
+    </div>
+    <div class="form-floating mb-3">
+      <input
+        type="text"
+        [(ngModel)]="customer.name"
+        name="name"
+        class="form-control"
+        id="name"
+        placeholder="nome"
+      />
+      <label for="name">Nome</label>
+      <div *ngIf="customer.name == ''" class="text-danger">
+        <span>* {{ messageErroInput }}</span>
+      </div>
+    </div>
+    <div class="form-floating">
+      <input
+        type="text"
+        [(ngModel)]="customer.email"
+        name="email"
+        class="form-control"
+        id="email"
+        placeholder="e-mail"
+      />
+      <label for="email">E-mail</label>
+      <div *ngIf="customer.email == ''" class="text-danger">
+        <span>* {{ messageErroInput }}</span>
+      </div>
+    </div>
+    <div class="form-floating">
+      <input
+        type="text"
+        [(ngModel)]="customer.phoneNumber"
+        name="phoneNumber"
+        class="form-control"
+        id="phoneNumber"
+        placeholder="Phone"
+      />
+      <label for="phoneNumber">Telefone</label>
+      <div *ngIf="customer.phoneNumber == ''" class="text-danger">
+        <span>* {{ messageErroInput }}</span>
+      </div>
+    </div>
+    <div class="customer-button">
+      <button *ngIf="!isLoadCustomerById" type="submit" class="btn btn-primary" id="register-button">
+        Cadastrar
+      </button>
+      <button
+        *ngIf="isLoadCustomerById"
+        type="submit"
+        class="btn btn-primary espaco-botao"
+      >
+        Aplicar edição
+      </button>
+      <button
+        *ngIf="isLoadCustomerById"
+        (click)="cancelarEdicao()"
+        type="submit"
+        class="btn btn-secondary espaco-botao"
+      >
+        Cancelar
+      </button>
+
+      <div class="customer-search">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <form class="d-flex">
+                <input
+                  [(ngModel)]="param"
+                  (ngModelChange)="validaInputSearch()"
+                  [ngModelOptions]="{ standalone: true }"
+                  style="width: 520px"
+                  class="form-control me-2"
+                  id="searchId"
+                  type="search"
+                  placeholder="nome, email, id"
+                  aria-label="Search"
+                />
+                <button
+                  (click)="searchCustomer()"
+                  class="btn btn-outline-success"
+                >
+                  Pesquisar
+                </button>
+              </form>
+            </div>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
 </form>
+
+<div class="customer-form-table">
+  <table class="table mt-4">
+    <thead>
+      <tr>
+        <th>Nome</th>
+        <th>E-mail</th>
+        <th>Telefone</th>
+        <th>Editar</th>
+        <th>Deletar</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        *ngFor="
+          let cust of customers
+            | paginate : { itemsPerPage: 3, currentPage: paginator }
+        "
+      >
+        <td [hidden]="true">{{ cust.id }}</td>
+        <td>{{ cust.name }}</td>
+        <td>{{ cust.email }}</td>
+        <td>{{ cust.phoneNumber }}</td>
+        <td>
+          <a (click)="loadCustomerById(cust.id)"
+            ><i class="fa-regular fa-pen-to-square"></i
+          ></a>
+        </td>
+        <td>
+          <a (click)="openModel(cust.id)"
+            ><i class="fa-solid fa-trash-can"></i
+          ></a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <pagination-controls (pageChange)="paginator = $event"></pagination-controls>
+</div>
+
+<div class="modal" id="myModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title"><i class="fa-solid fa-trash-can"></i></h5>
+      </div>
+      <div class="modal-body">
+        <p>Tem certeza que deseja excluir?</p>
+      </div>
+      <div class="modal-footer">
+        <button
+          (click)="closeModelDelete()"
+          type="button"
+          class="btn btn-primary"
+          data-bs-dismiss="modal"
+        >
+          Sim
+        </button>
+        <button
+          (click)="closeModelNotDelete()"
+          type="button"
+          class="btn btn-secondary"
+          data-bs-dismiss="modal"
+        >
+          Cancelar
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
