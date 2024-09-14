@@ -2,9 +2,32 @@
   <h5>Tela cadastro de Veículos</h5>
 </div>
 <div class="campos-form">
-  <div class="form-floating mb-3">
-    <input type="placa" class="form-control" id="floatingInput" placeholder="placa" />
-    <label for="floatingInput">Placa</label>
+  <div class="row">
+    <div class="col-md-4 col-sm-12">
+      <div class="form-floating mb-3">
+        <input
+          type="text"
+          class="form-control"
+          id="placa"
+          placeholder="placa"
+        />
+        <label for="floatingInput">Placa</label>
+      </div>
+    </div>
+    <div class="col-md-6 col-sm-12">
+      <div class="customer-search">
+        <div class="form-floating mb-3">
+          <input
+            type="text"
+            class="form-control"
+            id="conferir"
+            placeholder="placa"
+          />
+          <label for="floatingInput">nome, email</label>
+        </div>
+        <button class="btn btn-primary">Conferir</button>
+      </div>
+    </div>
   </div>
   <div class="selecoes">
     <div class="row">
@@ -40,6 +63,33 @@
           <option value="3">Three</option>
         </select>
       </div>
+      <div class="customer-form">
+        <div class="row">
+          <div class="col-md-6 col-sm-12">
+            <div class="form-floating mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="name"
+                placeholder="nome"
+              />
+              <label for="floatingInput">Nome</label>
+            </div>
+          </div>
+          <div class="col-md-6 col-sm-12">
+            <div class="form-floating mb-3">
+              <input
+                type="text"
+                class="form-control"
+                id="email"
+                placeholder="Email"
+              />
+              <label for="floatingInput">Email</label>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     <button type="button" class="btn btn-primary">Cadastrar</button>
   </div>
+</div>

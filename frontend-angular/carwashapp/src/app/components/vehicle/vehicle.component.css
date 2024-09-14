@@ -10,3 +10,24 @@
   .campos-form button{
     margin-top: 15px;
   }
+
+  .customer-form {
+   margin-top: 40px;
+  }
+
+  .customer-search {
+    display: flex;
+  }
+  
+  .customer-search .form-floating {
+    flex: 1;
+    margin-right: 10px;
+  }
+  
+  .customer-search button {
+    display: inline-block; 
+    margin-top: -1px;
+    margin-bottom: 20px;
+    width: 95px;
+   
+  }

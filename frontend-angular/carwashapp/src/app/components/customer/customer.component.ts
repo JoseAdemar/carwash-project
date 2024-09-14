@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
-import { Component, ElementRef, OnInit, Renderer2, } from '@angular/core';
+import { Component, ElementRef, OnInit, Renderer2 } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { CustomerService } from './service/customer.service';
-import { FormsModule} from '@angular/forms';
+import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { Customer } from './model/customer.model';
 import { NgxPaginationModule } from 'ngx-pagination';
@@ -54,7 +54,6 @@ export class CustomerComponent implements OnInit {
 
   protected onSubmitCustomerForm(): void {
     if (this.isValidatedfield()) {
-      this.customer.id = 0.1;
       this.customerService.addCustomer(this.customer).subscribe({
         next: (data) => {
           this.messageSucess = 'Cliente cadastrado com sucesso';
@@ -62,6 +61,7 @@ export class CustomerComponent implements OnInit {
           this.setMessageErroInputEmpty();
           this.isCustomerPersistWithSucess = true;
           this.loadCustomers();
+          this.customer = new Customer();
           setTimeout(() => {
             this.isCustomerPersistWithSucess = false;
           }, 4000);
@@ -73,21 +73,20 @@ export class CustomerComponent implements OnInit {
             this.isError = false;
             this.cleanCustomerForm();
           }, 4000);
-        }
+        },
       });
     } else {
       this.showInputMessageObligaton();
     }
   }
-    
 
-  cleanCustomerForm() {
+  private cleanCustomerForm() {
     this.customer.email = '';
     this.customer.name = '';
     this.customer.phoneNumber = '';
   }
 
-  protected showInputMessageObligaton(): string {
+  private showInputMessageObligaton(): string {
     const standerMessageErro = 'Campo obrigatório';
     if (
       this.customer.name === '' ||
@@ -116,7 +115,7 @@ export class CustomerComponent implements OnInit {
     return false;
   }
 
-  loadCustomers(): void {
+  private loadCustomers(): void {
     this.customerService.getCustomers().subscribe({
       next: (data) => {
         this.customers = data;
@@ -127,15 +126,11 @@ export class CustomerComponent implements OnInit {
     });
   }
 
-  deleteCustomerById(id: number) {
+  private deleteCustomerById(id: number) {
     return this.customerService.deleteCustomer(id).subscribe(() => {
       this.loadCustomers();
       this.setMessageErroInputEmpty();
     });
-  }
-
-  protected desejaDeletarCustomer(): boolean {
-    return false;
   }
 
   protected openModel(id: number): void {
@@ -165,41 +160,36 @@ export class CustomerComponent implements OnInit {
   protected loadCustomerById(id: number): void {
     this.customerService.getCustomerById(id).subscribe({
       next: (data) => {
-       
         this.customerInputInformation(this.customer);
         this.customer.name = data.name;
         this.customer.email = data.email;
         this.customer.phoneNumber = data.phoneNumber;
         this.customer.id = data.id;
         this.isLoadCustomerById = true;
-        console.log('Cliente atualizado com sucesso:');
       },
-      error: (error) => {
-        console.error('Erro ao atualizar cliente:', error);
-      },
+      error: (error) => {},
     });
   }
 
-  private customerInputInformation(customer: Customer){
+  private customerInputInformation(customer: Customer) {
     this.customer.name = this.elementRef.nativeElement.querySelector('#name');
     this.customer.email = this.elementRef.nativeElement.querySelector('#email');
-    this.customer.phoneNumber = this.elementRef.nativeElement.querySelector('#phoneNumber');
+    this.customer.phoneNumber =
+      this.elementRef.nativeElement.querySelector('#phoneNumber');
     this.customer.id = this.elementRef.nativeElement.querySelector('#id');
     return customer;
   }
 
-  protected updateCustomerById(id: number, customer: Customer): void {
+  private updateCustomerById(id: number, customer: Customer): void {
     this.customerService.updateCustomer(id, customer).subscribe({
       next: (updatedCustomer) => {
         this.loadCustomers();
         this.isLoadCustomerById = false;
         this.cleanCustomerForm();
         this.setMessageErroInputEmpty();
-        console.log('Cliente atualizado com sucesso:', updatedCustomer);
+        this.customer = new Customer();
       },
-      error: (error) => {
-        console.error('Erro ao atualizar cliente:', error);
-      },
+      error: (error) => {},
     });
   }
 
@@ -218,7 +208,11 @@ export class CustomerComponent implements OnInit {
     this.setMessageErroInputEmpty();
   }
 
-  searchCustomerByCriteria(id?: number, name?: string, email?: string): void {
+  private searchCustomerByCriteria(
+    id?: number,
+    name?: string,
+    email?: string
+  ): void {
     this.customerService.findCustomerByCriteria(id, name, email).subscribe({
       next: (data) => {
         if (data) {
@@ -227,7 +221,6 @@ export class CustomerComponent implements OnInit {
           this.customers.push(this.customer);
           this.validarPreenchimentoInput(id, name, email);
           this.unableRegisterButton();
-
         } else {
           this.messageSucess = 'Nenhum dado encontrado na pesquisa';
         }
@@ -236,50 +229,64 @@ export class CustomerComponent implements OnInit {
         this.messageSucess = 'Nenhum resultado encontrado na busca';
         this.param = document.querySelector('#searchId');
         this.param.value = this.messageSucess;
-      }
+      },
     });
   }
 
   private unableRegisterButton() {
-      const button = this.elementRef.nativeElement.querySelector('#register-button');
-      this.render.setStyle(button, 'display', 'none');
+    const button =
+      this.elementRef.nativeElement.querySelector('#register-button');
+    this.render.setStyle(button, 'display', 'none');
   }
 
-  validaInputSearch(): boolean{
-    if (this.param.value === '' || this.param.value === null || this.param.value === undefined) {
-        this.loadCustomers();
-        this.cleanCustomerForm();
-        this.customer = new Customer();
-        this.enableRegisterButton();
-        return true;
-      }
-      return false;
+  protected validaInputSearch(): boolean {
+    if (
+      this.param.value === '' ||
+      this.param.value === null ||
+      this.param.value === undefined
+    ) {
+      this.loadCustomers();
+      this.cleanCustomerForm();
+      this.customer = new Customer();
+      this.enableRegisterButton();
+      return true;
+    }
+    return false;
   }
 
   private enableRegisterButton() {
-    const button = this.elementRef.nativeElement.querySelector('#register-button');
+    const button =
+      this.elementRef.nativeElement.querySelector('#register-button');
     this.render.setStyle(button, 'display', '');
   }
 
-  protected searchCustomer(){
+  protected searchCustomer() {
     this.validarInputParametros();
-    this.searchCustomerByCriteria(this.idInput, this.nameInput, this.emailInput,);
+    this.searchCustomerByCriteria(
+      this.idInput,
+      this.nameInput,
+      this.emailInput
+    );
   }
 
   private validarInputParametros() {
     this.param = document.querySelector('#searchId');
-    if (parseInt(this.param.value)){
-       return this.idInput = this.param.value;
+    if (parseInt(this.param.value)) {
+      return (this.idInput = this.param.value);
     } else {
-        if (this.param.value.includes('@')){
-          return this.emailInput = this.param.value;
-        } else {
-          return this.nameInput = this.param.value;
-        }
+      if (this.param.value.includes('@')) {
+        return (this.emailInput = this.param.value);
+      } else {
+        return (this.nameInput = this.param.value);
+      }
     }
   }
 
-  validarPreenchimentoInput(id?: number, name?: string, email?: string) {
+  private validarPreenchimentoInput(
+    id?: number,
+    name?: string,
+    email?: string
+  ) {
     if (id !== undefined && id !== 0) {
       this.param.value = id;
     } else if (name !== undefined && name !== '') {
@@ -288,6 +295,4 @@ export class CustomerComponent implements OnInit {
       this.param.value = email;
     }
   }
-  
 }
-

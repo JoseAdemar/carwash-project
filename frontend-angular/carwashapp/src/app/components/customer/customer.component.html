@@ -11,7 +11,7 @@
   }"
   role="alert"
 >
-  <p>{{ isCustomerPersistWithSucess || isError ? messageSucess : '' }}</p>
+  <p>{{ isCustomerPersistWithSucess || isError ? messageSucess : "" }}</p>
 </div>
 
 <form (ngSubmit)="submitForm()">
@@ -73,7 +73,12 @@
       </div>
     </div>
     <div class="customer-button">
-      <button *ngIf="!isLoadCustomerById" type="submit" class="btn btn-primary" id="register-button">
+      <button
+        *ngIf="!isLoadCustomerById"
+        type="submit"
+        class="btn btn-primary"
+        id="register-button"
+      >
         Cadastrar
       </button>
       <button
