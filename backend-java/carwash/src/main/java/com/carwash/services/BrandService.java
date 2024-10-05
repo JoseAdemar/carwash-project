@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Service
-public class Brand {
+public class BrandService {
   public List<BrandEnum> brandEnum () {
    return Arrays.asList(BrandEnum.values());
   }

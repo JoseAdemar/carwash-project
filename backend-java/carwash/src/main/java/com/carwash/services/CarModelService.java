@@ -7,7 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Service
-public class CarModel {
+public class CarModelService {
   public List<CarModelEnum> carModels() {
     return Arrays.asList(CarModelEnum.values());
   }

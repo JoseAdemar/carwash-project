@@ -86,12 +86,15 @@ export class CustomerComponent implements OnInit {
     this.customer.phoneNumber = '';
   }
 
-  private showInputMessageObligaton(): string {
+  protected showInputMessageObligaton(): string {
     const standerMessageErro = 'Campo obrigatório';
     if (
-      this.customer.name === '' ||
-      this.customer.email === '' ||
-      this.customer.phoneNumber === ''
+      this.customer.name === undefined ||
+      this.customer.name == '' ||
+      this.customer.email === undefined ||
+      this.customer.email == '' ||
+      this.customer.phoneNumber === undefined ||
+      this.customer.phoneNumber == ''
     ) {
       this.messageErroInput = standerMessageErro;
     } else {
@@ -104,11 +107,14 @@ export class CustomerComponent implements OnInit {
     this.messageErroInput = '';
   }
 
-  private isValidatedfield(): boolean {
+  protected isValidatedfield(): boolean {
     if (
       this.customer.name != '' &&
+      this.customer.name != null &&
       this.customer.email != '' &&
-      this.customer.phoneNumber != ''
+      this.customer.email != null &&
+      this.customer.phoneNumber != '' &&
+      this.customer.phoneNumber != null
     ) {
       return true;
     }
@@ -126,10 +132,21 @@ export class CustomerComponent implements OnInit {
     });
   }
 
-  private deleteCustomerById(id: number) {
-    return this.customerService.deleteCustomer(id).subscribe(() => {
-      this.loadCustomers();
-      this.setMessageErroInputEmpty();
+  private deleteCustomerById(id: number): void {
+    this.customerService.deleteCustomer(id).subscribe({
+      next: () => {
+        this.loadCustomers();
+        this.setMessageErroInputEmpty();
+      },
+      error: () => {
+        this.isError = true;
+        this.messageSucess = 'Não pode excluir usuário com veículo cadastrado';
+        setTimeout(() => {
+          this.isError = false;
+          this.cleanCustomerForm();
+          this.messageSucess = '';
+        }, 4000);
+      },
     });
   }
 
@@ -221,6 +238,7 @@ export class CustomerComponent implements OnInit {
           this.customers.push(this.customer);
           this.validarPreenchimentoInput(id, name, email);
           this.unableRegisterButton();
+          this.messageErroInput = '';
         } else {
           this.messageSucess = 'Nenhum dado encontrado na pesquisa';
         }
@@ -229,6 +247,7 @@ export class CustomerComponent implements OnInit {
         this.messageSucess = 'Nenhum resultado encontrado na busca';
         this.param = document.querySelector('#searchId');
         this.param.value = this.messageSucess;
+        this.messageErroInput = '';
       },
     });
   }

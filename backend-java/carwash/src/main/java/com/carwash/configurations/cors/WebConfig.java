@@ -1,4 +1,4 @@
-package com.carwash.configurations.swagger;
+package com.carwash.configurations.cors;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;

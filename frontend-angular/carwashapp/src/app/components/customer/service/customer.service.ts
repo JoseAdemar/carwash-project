@@ -36,7 +36,7 @@ export class CustomerService {
     return this.http.put<Customer>(`${this.apiUrlUpdate}/${id}`, customer);
   }
 
-  findCustomerByCriteria(id?: number, name?: string, email?: string): Observable<Customer>{
+  public findCustomerByCriteria(id?: number, name?: string, email?: string): Observable<Customer>{
     let params = new HttpParams();
     if (id){
       params = params.set('id', id.toString());

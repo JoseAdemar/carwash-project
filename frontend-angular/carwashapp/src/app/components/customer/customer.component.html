@@ -26,7 +26,7 @@
         placeholder="id"
       />
       <label for="name">id</label>
-      <div *ngIf="customer.id == 0" class="text-danger">
+      <div *ngIf="customer.id === 0 || customer.id === undefined" class="text-danger">
         <span>* {{ messageErroInput }}</span>
       </div>
     </div>
@@ -40,7 +40,7 @@
         placeholder="nome"
       />
       <label for="name">Nome</label>
-      <div *ngIf="customer.name == ''" class="text-danger">
+      <div *ngIf="customer.name === '' || customer.name === undefined" class="text-danger">
         <span>* {{ messageErroInput }}</span>
       </div>
     </div>
@@ -54,7 +54,7 @@
         placeholder="e-mail"
       />
       <label for="email">E-mail</label>
-      <div *ngIf="customer.email == ''" class="text-danger">
+      <div *ngIf="customer.email === '' || customer.email === undefined" class="text-danger">
         <span>* {{ messageErroInput }}</span>
       </div>
     </div>
@@ -68,7 +68,7 @@
         placeholder="Phone"
       />
       <label for="phoneNumber">Telefone</label>
-      <div *ngIf="customer.phoneNumber == ''" class="text-danger">
+      <div *ngIf="customer.phoneNumber === '' || customer.phoneNumber === undefined" class="text-danger">
         <span>* {{ messageErroInput }}</span>
       </div>
     </div>
@@ -152,12 +152,12 @@
         <td>{{ cust.phoneNumber }}</td>
         <td>
           <a (click)="loadCustomerById(cust.id)"
-            ><i class="fa-regular fa-pen-to-square"></i
+            ><i style="margin-left: 10px;" class="fa-regular fa-pen-to-square"></i
           ></a>
         </td>
         <td>
           <a (click)="openModel(cust.id)"
-            ><i class="fa-solid fa-trash-can"></i
+            ><i style="margin-left: 19px;" class="fa-solid fa-trash-can"></i
           ></a>
         </td>
       </tr>

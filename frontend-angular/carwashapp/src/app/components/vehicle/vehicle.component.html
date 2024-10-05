@@ -3,93 +3,82 @@
 </div>
 <div class="campos-form">
   <div class="row">
-    <div class="col-md-4 col-sm-12">
+    <div class="col-md-2 col-sm-12">
       <div class="form-floating mb-3">
-        <input
+        <input (mouseout)="loadVehicleInformation()"
           type="text"
           class="form-control"
-          id="placa"
-          placeholder="placa"
-        />
-        <label for="floatingInput">Placa</label>
+          id="plate"
+          #plate="ngModel" [(ngModel)]="this.vehicle.licensePlate"
+          placeholder="plate" />
+        <label for="plate">Placa</label>
       </div>
     </div>
-    <div class="col-md-6 col-sm-12">
+    <div class="col-md-4 col-sm-12">
       <div class="customer-search">
         <div class="form-floating mb-3">
           <input
             type="text"
             class="form-control"
-            id="conferir"
-            placeholder="placa"
-          />
-          <label for="floatingInput">nome, email</label>
+            id="brand"
+            #brand="ngModel" [(ngModel)]="this.vehicle.brand"
+            placeholder="brand" />
+          <label for="floatingInput">Marca</label>
         </div>
-        <button class="btn btn-primary">Conferir</button>
+      </div>
+    </div>
+    <div class="col-md-4 col-sm-12">
+      <div class="customer-search">
+        <div class="form-floating mb-3">
+          <input
+            type="text"
+            class="form-control"
+            id="model"
+            #model="ngModel" [(ngModel)]="this.vehicle.carModel"
+            placeholder="model" />
+          <label for="floatingInput">Modelo</label>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2 col-sm-12">
+      <div class="customer-search">
+        <div class="form-floating mb-3">
+          <input
+            type="text"
+            class="form-control"
+            id="color"
+            #color="ngModel" [(ngModel)]="this.vehicle.color"
+            placeholder="placa" />
+          <label for="floatingInput">Cor</label>
+        </div>
       </div>
     </div>
   </div>
-  <div class="selecoes">
+  <div class="customer-form">
     <div class="row">
-      <div class="col-md-3 col-sm-12">
-        <select class="form-select" aria-label="Default select example">
-          <option selected>Marca</option>
-          <option value="1">One</option>
-          <option value="2">Two</option>
-          <option value="3">Three</option>
-        </select>
+      <div class="col-md-6 col-sm-12">
+        <div class="form-floating mb-3">
+          <input (mouseout)="findCustomerByCriteria()"
+            type="text"
+            class="form-control"
+            id="name"
+            #name="ngModel" [(ngModel)]="this.customer.name"
+            placeholder="nome" />
+          <label for="floatingInput">Id, Nome ou Email</label>
+        </div>
       </div>
-      <div class="col-md-3 col-sm-12">
-        <select class="form-select" aria-label="Default select example">
-          <option selected>Modelo</option>
-          <option value="1">One</option>
-          <option value="2">Two</option>
-          <option value="3">Three</option>
-        </select>
-      </div>
-      <div class="col-md-3 col-sm-12">
-        <select class="form-select" aria-label="Default select example">
-          <option selected>Cor</option>
-          <option value="1">One</option>
-          <option value="2">Two</option>
-          <option value="3">Three</option>
-        </select>
-      </div>
-      <div class="col-md-3 col-sm-12">
-        <select class="form-select" aria-label="Default select example">
-          <option selected>Categoria</option>
-          <option value="1">One</option>
-          <option value="2">Two</option>
-          <option value="3">Three</option>
-        </select>
-      </div>
-      <div class="customer-form">
-        <div class="row">
-          <div class="col-md-6 col-sm-12">
-            <div class="form-floating mb-3">
-              <input
-                type="text"
-                class="form-control"
-                id="name"
-                placeholder="nome"
-              />
-              <label for="floatingInput">Nome</label>
-            </div>
-          </div>
-          <div class="col-md-6 col-sm-12">
-            <div class="form-floating mb-3">
-              <input
-                type="text"
-                class="form-control"
-                id="email"
-                placeholder="Email"
-              />
-              <label for="floatingInput">Email</label>
-            </div>
-          </div>
+      <div class="col-md-6 col-sm-12">
+        <div class="form-floating mb-3">
+          <input
+            type="text"
+            class="form-control"
+            id="email"
+            #email="ngModel" [(ngModel)]="this.customer.email"
+            placeholder="Email" />
+          <label for="floatingInput">Email</label>
         </div>
       </div>
     </div>
-    <button type="button" class="btn btn-primary">Cadastrar</button>
   </div>
 </div>
+<button (click)="saveVehicleData()" type="button" class="btn btn-primary">Cadastrar</button>
