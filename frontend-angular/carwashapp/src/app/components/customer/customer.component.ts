@@ -81,6 +81,7 @@ export class CustomerComponent implements OnInit {
   }
 
   private cleanCustomerForm() {
+    this.customer.id = 0;
     this.customer.email = '';
     this.customer.name = '';
     this.customer.phoneNumber = '';
@@ -125,6 +126,7 @@ export class CustomerComponent implements OnInit {
     this.customerService.getCustomers().subscribe({
       next: (data) => {
         this.customers = data;
+        this.cleanCustomerForm();
       },
       error: () => {
         this.isError = true;
@@ -280,24 +282,29 @@ export class CustomerComponent implements OnInit {
   }
 
   protected searchCustomer() {
-    this.validarInputParametros();
-    this.searchCustomerByCriteria(
-      this.idInput,
-      this.nameInput,
-      this.emailInput
-    );
+    if (this.validarInputParametros()) {
+      this.searchCustomerByCriteria(
+        this.idInput,
+        this.nameInput,
+        this.emailInput
+      );
+    }
   }
 
   private validarInputParametros() {
     this.param = document.querySelector('#searchId');
-    if (parseInt(this.param.value)) {
-      return (this.idInput = this.param.value);
-    } else {
-      if (this.param.value.includes('@')) {
-        return (this.emailInput = this.param.value);
+    if (this.param.value !== '' && this.param.value !== undefined) {
+      if (parseInt(this.param.value)) {
+        return (this.idInput = this.param.value);
       } else {
-        return (this.nameInput = this.param.value);
+        if (this.param.value.includes('@')) {
+          return (this.emailInput = this.param.value);
+        } else {
+          return (this.nameInput = this.param.value);
+        }
       }
+    } else {
+      this.param = 'Nenhum dado encontrado na busca'
     }
   }
 

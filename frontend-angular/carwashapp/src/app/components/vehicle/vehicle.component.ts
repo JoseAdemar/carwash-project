@@ -6,31 +6,44 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { CustomerService } from '../customer/service/customer.service';
 import { Customer } from '../customer/model/customer.model';
+import { NgxPaginationModule } from 'ngx-pagination';
 
 @Component({
   selector: 'app-vehicle',
   standalone: true,
-  imports: [CommonModule, FormsModule, HttpClientModule],
+  imports: [CommonModule, FormsModule, HttpClientModule, NgxPaginationModule],
   templateUrl: './vehicle.component.html',
   styleUrl: './vehicle.component.css',
 })
 export class VehicleComponent implements OnInit {
+  vehicles: Vehicle[] = [];
+  protected paginator: number = 1;
+  protected isVehicleEditing = false;
+
   public vehicle: Vehicle = {
+    id: 0,
     licensePlate: '',
     brand: '',
     carModel: '',
     color: '',
+    customer: {
+      id: 0,
+      name: '',
+      email: '',
+      phoneNumber: '',
+    },
   };
- 
+
   public customer: Customer = {
+    id: 0,
     name: '',
     email: '',
     phoneNumber: '',
-    id: 0,
   };
 
   ngOnInit(): void {
     this.loadVehicleInformation();
+    this.getAllVehicles();
   }
 
   constructor(
@@ -39,14 +52,13 @@ export class VehicleComponent implements OnInit {
   ) {}
 
   public loadVehicleInformation(): void {
-    if (this.isPlateEmptyValue()) {
+    if (this.isPlateEmptyValue() && this.isVehicleEditing === false) {
       this.vehicleService.getVehicleData(this.vehicle.licensePlate).subscribe({
         next: (data) => {
           this.vehicle.licensePlate = data.licensePlate;
           this.vehicle.brand = data.brand;
           this.vehicle.carModel = data.carModel;
           this.vehicle.color = data.color;
-          console.log(data);
         },
         error: () => {},
       });
@@ -90,7 +102,7 @@ export class VehicleComponent implements OnInit {
             console.log('Nenhum resultado encontrado na busca');
           },
         });
-    } 
+    }
   }
 
   private validarInputParametros() {
@@ -98,16 +110,19 @@ export class VehicleComponent implements OnInit {
       this.customer.id = parseInt(this.customer.name);
       this.customer.name = '';
       this.customer.email = '';
-    } else if (this.customer.name !== undefined && this.customer.name.includes('@')) {
-        this.customer.email = this.customer.name;
-        this.customer.id = 0;
-        this.customer.name = '';
-      } else {
-          this.customer.name = this.customer.name;
-          this.customer.id = 0;
-          this.customer.email = '';
-      }
+    } else if (
+      this.customer.name !== undefined &&
+      this.customer.name.includes('@')
+    ) {
+      this.customer.email = this.customer.name;
+      this.customer.id = 0;
+      this.customer.name = '';
+    } else {
+      this.customer.name = this.customer.name;
+      this.customer.id = 0;
+      this.customer.email = '';
     }
+  }
 
   private isNameFiledEmpty(): boolean {
     if (this.customer.name === undefined || this.customer.name === '') {
@@ -117,7 +132,91 @@ export class VehicleComponent implements OnInit {
   }
 
   saveVehicleData() {
-    console.log(this.vehicle);
-    console.log(this.customer);
+    this.addCustomerToVehicle();
+    this.vehicleService.saveVehicleInformation(this.vehicle).subscribe({
+      next: (data) => {
+        if (data) {
+          this.vehicle.licensePlate = data.licensePlate;
+          this.vehicle.brand = data.brand;
+          this.vehicle.carModel = data.carModel;
+          this.vehicle.color = data.color;
+          this.vehicle.customer = this.customer;
+          this.clearVehicleForm();
+          this.getAllVehicles();
+        } 
+      },
+      error: (error) => {
+        console.log('');
+      },
+    });
+  }
+
+  private addCustomerToVehicle() {
+    this.vehicle.customer.id = this.customer.id;
+    this.vehicle.customer.name = this.customer.name;
+    this.vehicle.customer.email = this.customer.email;
+    this.vehicle.customer.phoneNumber = this.customer.phoneNumber;
+  }
+
+  private clearVehicleForm() {
+    this.vehicle.licensePlate = '';
+    this.vehicle.brand = '';
+    this.vehicle.carModel = '';
+    this.vehicle.color = '';
+    this.vehicle.customer.id = 0;
+    this.vehicle.customer.name = '';
+    this.vehicle.customer.email = '';
+    this.vehicle.customer.phoneNumber = '';
+  }
+
+  public getAllVehicles(){
+    this.vehicleService.getAllVehiclesInformation().subscribe({
+      next: (data) => {
+        if (data) {
+          this.vehicles = data;
+        }
+      }
+    })
+  }
+
+  public deleteVehicleById(id: number): void{
+    this.vehicleService.deleteVehicleById(id).subscribe({
+      next: () => {
+        this.getAllVehicles();
+      }
+    });
+  }
+
+  public updateDataVehicle(id: number, vehicle: Vehicle) {
+    this.vehicleService.updateVehicleInformation(id, vehicle).subscribe({
+      next: () => {
+        this.getAllVehicles();
+        this.clearVehicleForm();
+        this.isVehicleEditing = false;
+      }
+    })
+  }
+
+  public getVehicleByIdEdit(id: number){
+    this.vehicleService.getVehicleById(id).subscribe({
+      next: (data) => {
+        this.vehicle.id = data.id;
+        this.vehicle.licensePlate = data.licensePlate;
+        this.vehicle.brand = data.brand;
+        this.vehicle.carModel = data.carModel;
+        this.vehicle.color = data.color;
+        this.vehicle.customer = data.customer;
+        this.isVehicleEditing = true;
+      }
+    });
+  }
+
+  public cancelChange() {
+    this.vehicle = new Vehicle();
+    this.vehicle.licensePlate = '';
+        this.vehicle.brand = '';
+        this.vehicle.carModel = '';
+        this.vehicle.color = '';
+        this.isVehicleEditing = false;
   }
 }

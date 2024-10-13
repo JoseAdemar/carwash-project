@@ -1,2 +1,7 @@
+.vehicle-form-table td i {
+    cursor: pointer;
+}
 
-
+.vehicle-buttons .btn-secondary {
+    margin-left: 10px;
+}

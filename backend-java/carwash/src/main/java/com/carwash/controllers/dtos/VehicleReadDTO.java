@@ -2,15 +2,11 @@ package com.carwash.controllers.dtos;
 
 import com.carwash.entities.Customer;
 import com.carwash.entities.Vehicle;
-import com.carwash.entities.enumerations.BrandEnum;
-import com.carwash.entities.enumerations.CarModelEnum;
-import com.carwash.entities.enumerations.CategoryEnum;
-import com.carwash.entities.enumerations.ColorEnum;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.Builder;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
 @Setter
@@ -21,10 +17,9 @@ public class VehicleReadDTO {
 
     private Long id;
     private String licensePlate;
-    private BrandEnum brand;
-    private CarModelEnum model;
-    private ColorEnum color;
-    private CategoryEnum category;
+    private String brand;
+    private String carModel;
+    private String color;
     private Customer customer;
 
     public static VehicleReadDTO getVehicleReadDTO(Vehicle vehicle) {
@@ -33,8 +28,7 @@ public class VehicleReadDTO {
                 .licensePlate(vehicle.getLicensePlate())
                 .brand(vehicle.getBrand())
                 .color(vehicle.getColor())
-                .model(vehicle.getModel())
-                .category(vehicle.getCategory())
+                .carModel(vehicle.getCarModel())
                 .customer(vehicle.getCustomer())
                 .build();
     }

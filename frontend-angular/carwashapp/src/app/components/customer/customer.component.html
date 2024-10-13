@@ -132,6 +132,7 @@
   <table class="table mt-4">
     <thead>
       <tr>
+        <th>Código</th>
         <th>Nome</th>
         <th>E-mail</th>
         <th>Telefone</th>
@@ -146,7 +147,7 @@
             | paginate : { itemsPerPage: 3, currentPage: paginator }
         "
       >
-        <td [hidden]="true">{{ cust.id }}</td>
+        <td>{{ cust.id }}</td>
         <td>{{ cust.name }}</td>
         <td>{{ cust.email }}</td>
         <td>{{ cust.phoneNumber }}</td>

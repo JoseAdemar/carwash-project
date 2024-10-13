@@ -1,13 +1,8 @@
 package com.carwash.entities;
 
-import com.carwash.entities.enumerations.BrandEnum;
-import com.carwash.entities.enumerations.CarModelEnum;
-import com.carwash.entities.enumerations.CategoryEnum;
-import com.carwash.entities.enumerations.ColorEnum;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -29,7 +24,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @Entity
 @Table(name = "vehicle")
-@SuppressWarnings({"checkstyle:MissingJavadocType", "checkstyle:MissingJavadocMethod"})
 public class Vehicle {
 
   @Id
@@ -40,21 +34,14 @@ public class Vehicle {
   @Column(name = "license")
   private String licensePlate;
 
-  @Enumerated(EnumType.STRING)
   @NotNull
-  private BrandEnum brand;
+  private String brand;
 
-  @Enumerated(EnumType.STRING)
   @NotNull
-  private CarModelEnum model;
+  private String carModel;
 
-  @Enumerated(EnumType.STRING)
   @NotNull
-  private ColorEnum color;
-
-  @Enumerated(EnumType.STRING)
-  @NotNull
-  private CategoryEnum category;
+  private String color;
 
   @ManyToOne
   @JoinColumn(name = "customer_id")

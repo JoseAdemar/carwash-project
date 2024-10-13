@@ -2,83 +2,171 @@
   <h5>Tela cadastro de Veículos</h5>
 </div>
 <div class="campos-form">
-  <div class="row">
-    <div class="col-md-2 col-sm-12">
-      <div class="form-floating mb-3">
-        <input (mouseout)="loadVehicleInformation()"
-          type="text"
-          class="form-control"
-          id="plate"
-          #plate="ngModel" [(ngModel)]="this.vehicle.licensePlate"
-          placeholder="plate" />
-        <label for="plate">Placa</label>
-      </div>
-    </div>
-    <div class="col-md-4 col-sm-12">
-      <div class="customer-search">
-        <div class="form-floating mb-3">
-          <input
-            type="text"
-            class="form-control"
-            id="brand"
-            #brand="ngModel" [(ngModel)]="this.vehicle.brand"
-            placeholder="brand" />
-          <label for="floatingInput">Marca</label>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4 col-sm-12">
-      <div class="customer-search">
-        <div class="form-floating mb-3">
-          <input
-            type="text"
-            class="form-control"
-            id="model"
-            #model="ngModel" [(ngModel)]="this.vehicle.carModel"
-            placeholder="model" />
-          <label for="floatingInput">Modelo</label>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-2 col-sm-12">
-      <div class="customer-search">
-        <div class="form-floating mb-3">
-          <input
-            type="text"
-            class="form-control"
-            id="color"
-            #color="ngModel" [(ngModel)]="this.vehicle.color"
-            placeholder="placa" />
-          <label for="floatingInput">Cor</label>
-        </div>
-      </div>
-    </div>
-  </div>
-  <div class="customer-form">
+  <form (ngSubmit)="saveVehicleData()">
     <div class="row">
-      <div class="col-md-6 col-sm-12">
-        <div class="form-floating mb-3">
-          <input (mouseout)="findCustomerByCriteria()"
-            type="text"
-            class="form-control"
-            id="name"
-            #name="ngModel" [(ngModel)]="this.customer.name"
-            placeholder="nome" />
-          <label for="floatingInput">Id, Nome ou Email</label>
-        </div>
-      </div>
-      <div class="col-md-6 col-sm-12">
+      <div class="col-md-2 col-sm-12">
         <div class="form-floating mb-3">
           <input
+            (mouseout)="loadVehicleInformation()"
             type="text"
             class="form-control"
-            id="email"
-            #email="ngModel" [(ngModel)]="this.customer.email"
-            placeholder="Email" />
-          <label for="floatingInput">Email</label>
+            id="plate"
+            #plate="ngModel"
+            [(ngModel)]="this.vehicle.licensePlate"
+            name="licensePlate"
+            placeholder="plate"
+          />
+          <label for="plate">Placa</label>
+        </div>
+      </div>
+      <div class="col-md-4 col-sm-12">
+        <div class="customer-search">
+          <div class="form-floating mb-3">
+            <input
+              type="text"
+              class="form-control"
+              id="brand"
+              #brand="ngModel"
+              [(ngModel)]="this.vehicle.brand"
+              name="brand"
+              placeholder="brand"
+            />
+            <label for="floatingInput">Marca</label>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4 col-sm-12">
+        <div class="customer-search">
+          <div class="form-floating mb-3">
+            <input
+              type="text"
+              class="form-control"
+              id="carModel"
+              #carModel="ngModel"
+              [(ngModel)]="this.vehicle.carModel"
+              name="carModel"
+              placeholder="model"
+            />
+            <label for="floatingInput">Modelo</label>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2 col-sm-12">
+        <div class="customer-search">
+          <div class="form-floating mb-3">
+            <input
+              type="text"
+              class="form-control"
+              id="color"
+              #color="ngModel"
+              [(ngModel)]="this.vehicle.color"
+              name="color"
+              placeholder="placa"
+            />
+            <label for="floatingInput">Cor</label>
+          </div>
         </div>
       </div>
     </div>
-  </div>
+    <div class="customer-form">
+      <div class="row">
+        <div *ngIf="!isVehicleEditing" class="col-md-6 col-sm-12">
+          <div class="form-floating mb-3">
+            <input
+              (mouseout)="findCustomerByCriteria()"
+              type="text"
+              class="form-control"
+              id="name"
+              #name="ngModel"
+              [(ngModel)]="this.customer.name"
+              name="name"
+              placeholder="nome"
+            />
+            <label for="floatingInput">Id, Nome ou Email</label>
+          </div>
+        </div>
+        <div *ngIf="!isVehicleEditing" class="col-md-5 col-sm-12">
+          <div class="form-floating mb-3">
+            <input
+              type="text"
+              class="form-control"
+              id="email"
+              #email="ngModel"
+              [(ngModel)]="this.customer.email"
+              name="email"
+              placeholder="Email"
+            />
+            <label for="floatingInput">Email</label>
+          </div>
+        </div>
+        <div *ngIf="!isVehicleEditing" class="col-md-1 col-sm-12">
+          <div class="form-floating mb-3">
+            <input
+              type="text"
+              class="form-control"
+              id="id"
+              #id="ngModel"
+              [(ngModel)]="this.customer.id"
+              name="id"
+              placeholder="Id"
+            />
+            <label for="floatingInput">Código</label>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="vehicle-buttons">
+      <button *ngIf="!isVehicleEditing" type="submit" class="btn btn-primary">
+        Cadastrar
+      </button>
+      <button *ngIf="isVehicleEditing" (click)="updateDataVehicle(this.vehicle.id, this.vehicle)" type="submit" class="btn btn-primary">
+        Atualizar
+      </button>
+      <button *ngIf="isVehicleEditing" (click)="cancelChange()" type="submit" class="btn btn-secondary">
+        Cancelar
+      </button>
+    </div>
+  </form>
 </div>
-<button (click)="saveVehicleData()" type="button" class="btn btn-primary">Cadastrar</button>
+
+<div class="vehicle-form-table">
+  <table class="table mt-4">
+    <thead>
+      <tr>
+        <th>Placa</th>
+        <th>Marca</th>
+        <th>Cor</th>
+        <th>Cliente</th>
+        <th>Editar</th>
+        <th>Deletar</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr
+        *ngFor="
+          let vehicle of vehicles
+            | paginate : { itemsPerPage: 3, currentPage: paginator }
+        "
+      >
+        <td>{{ vehicle.licensePlate }}</td>
+        <td>{{ vehicle.brand }}</td>
+        <td>{{ vehicle.color }}</td>
+        <td>{{ vehicle.customer.name }}</td>
+        <td>
+          <a (click)="getVehicleByIdEdit(vehicle.id)"
+            ><i
+              style="margin-left: 10px"
+              class="fa-regular fa-pen-to-square"
+            ></i
+          ></a>
+        </td>
+        <td>
+          <a (click)="deleteVehicleById(vehicle.id)"
+            ><i style="margin-left: 19px" class="fa-solid fa-trash-can"></i
+          ></a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+  <pagination-controls (pageChange)="paginator = $event"></pagination-controls>
+</div>
