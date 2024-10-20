@@ -13,6 +13,7 @@ export class VehicleService {
   private deleteVehicleApi = 'http://localhost:8080/vehicles/api';
   private putVehicleApi = 'http://localhost:8080/vehicles/api';
   private getVehicleByIdApi = 'http://localhost:8080/vehicles/api';
+  private getVehicleApiByPlate = 'http://localhost:8080/vehicles/api/plate';
 
   constructor(private http: HttpClient) {}
 
@@ -22,8 +23,15 @@ export class VehicleService {
     return this.http.get<Vehicle>(`${this.getVehicleApi}`, { params });
   }
 
+  public getVehicleDataByPlate(licensePlate: string): Observable<Vehicle> {
+    let params = new HttpParams();
+    params = params.set('plate', licensePlate.toString());
+    return this.http.get<Vehicle>(`${this.getVehicleApiByPlate}`, { params });
+  }
+
   public saveVehicleInformation(vehicle: Vehicle): Observable<Vehicle> {
-    return this.http.post<Vehicle>(this.postVehicleApi, vehicle);
+     var teste = this.http.post<Vehicle>(this.postVehicleApi, vehicle);
+     return teste;
   }
 
   public getAllVehiclesInformation(): Observable<Vehicle[]>{

@@ -125,6 +125,34 @@
       <button *ngIf="isVehicleEditing" (click)="cancelChange()" type="submit" class="btn btn-secondary">
         Cancelar
       </button>
+      <div class="vehicle-search">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+          <div class="container-fluid">
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+              <form class="d-flex">
+                <input
+                  style="width: 520px"
+                  class="form-control me-2"
+                  id="searchId"
+                  #id="ngModel"
+                  #searchInputLicensePlateValue
+                  [ngModelOptions]="{ standalone: true }"
+                  [(ngModel)]="this.vehicle.licensePlate"
+                  (ngModelChange)="checkIfVehicleLicensePlateIsEmpty($event)"
+                  type="search"
+                  placeholder="plate"
+                  aria-label="Search"
+                />
+                <button (click)="loadVehicleInformationByPlate()"
+                  class="btn btn-outline-success"
+                >
+                  Pesquisar
+                </button>
+              </form>
+            </div>
+          </div>
+        </nav>
+      </div>
     </div>
   </form>
 </div>

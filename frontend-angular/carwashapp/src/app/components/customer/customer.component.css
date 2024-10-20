@@ -21,7 +21,7 @@
   padding: 0;
 }
 
-.message-sucess p{
+.message-sucess p {
   margin-left: 20px;
   margin-top: 10px;
 }
@@ -30,12 +30,12 @@
   color: rgb(245, 3, 3);
 }
 
-.customer-form-table .fa-trash-can{
+.customer-form-table .fa-trash-can {
   cursor: pointer;
   color: rgb(165, 162, 162);
 }
 
-.customer-form-table .fa-pen-to-square{
+.customer-form-table .fa-pen-to-square {
   cursor: pointer;
   color: rgb(133, 231, 161);
 }
@@ -44,17 +44,28 @@
   margin-left: 30px;
 }
 
-.customer-button .btn .btn-primary{
+.customer-button .btn .btn-primary {
   display: flex;
   gap: 10px;
 }
 
 .customer-button {
   display: flex;
-  padding: 0px; 
-  margin: 0px; 
-  height: 45px; 
-  line-height: 20px; 
+  padding: 0px;
+  margin: 0px;
+  height: 45px;
+  line-height: 20px;
   gap: 10px;
 }
 
+.customer-search .bg-light {
+  --bs-bg-opacity: none;
+}
+
+.customer-search .container-fluid {
+  padding-left: 0%;
+}
+
+.customer-search input {
+  width: 500px !important;
+}

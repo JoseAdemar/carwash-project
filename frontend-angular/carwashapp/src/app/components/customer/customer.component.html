@@ -26,50 +26,101 @@
         placeholder="id"
       />
       <label for="name">id</label>
-      <div *ngIf="customer.id === 0 || customer.id === undefined" class="text-danger">
+      <div
+        *ngIf="customer.id === 0 || customer.id === undefined"
+        class="text-danger"
+      >
         <span>* {{ messageErroInput }}</span>
       </div>
     </div>
-    <div class="form-floating mb-3">
-      <input
-        type="text"
-        [(ngModel)]="customer.name"
-        name="name"
-        class="form-control"
-        id="name"
-        placeholder="nome"
-      />
-      <label for="name">Nome</label>
-      <div *ngIf="customer.name === '' || customer.name === undefined" class="text-danger">
-        <span>* {{ messageErroInput }}</span>
+    <div class="row">
+      <div class="col-md-6 col-sm-12">
+        <div class="form-floating mb-3">
+          <input
+            type="text"
+            [(ngModel)]="customer.name"
+            name="name"
+            class="form-control"
+            id="name"
+            placeholder="nome"
+          />
+          <label for="name">Nome</label>
+          <div
+            *ngIf="customer.name === '' || customer.name === undefined"
+            class="text-danger"
+          >
+            <span>* {{ messageErroInput }}</span>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="form-floating">
-      <input
-        type="text"
-        [(ngModel)]="customer.email"
-        name="email"
-        class="form-control"
-        id="email"
-        placeholder="e-mail"
-      />
-      <label for="email">E-mail</label>
-      <div *ngIf="customer.email === '' || customer.email === undefined" class="text-danger">
-        <span>* {{ messageErroInput }}</span>
+      <div class="col-md-6 col-sm-12">
+        <div class="form-floating">
+          <input
+            type="text"
+            [(ngModel)]="customer.email"
+            name="email"
+            class="form-control"
+            id="email"
+            placeholder="e-mail"
+          />
+          <label for="email">E-mail</label>
+          <div
+            *ngIf="customer.email === '' || customer.email === undefined"
+            class="text-danger"
+          >
+            <span>* {{ messageErroInput }}</span>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="form-floating">
-      <input
-        type="text"
-        [(ngModel)]="customer.phoneNumber"
-        name="phoneNumber"
-        class="form-control"
-        id="phoneNumber"
-        placeholder="Phone"
-      />
-      <label for="phoneNumber">Telefone</label>
-      <div *ngIf="customer.phoneNumber === '' || customer.phoneNumber === undefined" class="text-danger">
-        <span>* {{ messageErroInput }}</span>
+      <div class="col-md-6 col-sm-12">
+        <div class="form-floating">
+          <input
+            type="text"
+            [(ngModel)]="customer.phoneNumber"
+            name="phoneNumber"
+            class="form-control"
+            id="phoneNumber"
+            placeholder="Phone"
+          />
+          <label for="phoneNumber">Telefone</label>
+          <div
+            *ngIf="
+              customer.phoneNumber === '' || customer.phoneNumber === undefined
+            "
+            class="text-danger"
+          >
+            <span>* {{ messageErroInput }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6 col-sm-12">
+        <div class="customer-search">
+          <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <form class="d-flex">
+                  <input
+                    [(ngModel)]="param"
+                    (ngModelChange)="validaInputSearch()"
+                    [ngModelOptions]="{ standalone: true }"
+                    style="width: 520px"
+                    class="form-control me-2"
+                    id="searchId"
+                    type="search"
+                    placeholder="nome, email, id"
+                    aria-label="Search"
+                  />
+                  <button
+                    (click)="searchCustomer()"
+                    class="btn btn-outline-success"
+                  >
+                    Pesquisar
+                  </button>
+                </form>
+              </div>
+            </div>
+          </nav>
+        </div>
       </div>
     </div>
     <div class="customer-button">
@@ -96,34 +147,6 @@
       >
         Cancelar
       </button>
-
-      <div class="customer-search">
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-          <div class="container-fluid">
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <form class="d-flex">
-                <input
-                  [(ngModel)]="param"
-                  (ngModelChange)="validaInputSearch()"
-                  [ngModelOptions]="{ standalone: true }"
-                  style="width: 520px"
-                  class="form-control me-2"
-                  id="searchId"
-                  type="search"
-                  placeholder="nome, email, id"
-                  aria-label="Search"
-                />
-                <button
-                  (click)="searchCustomer()"
-                  class="btn btn-outline-success"
-                >
-                  Pesquisar
-                </button>
-              </form>
-            </div>
-          </div>
-        </nav>
-      </div>
     </div>
   </div>
 </form>
@@ -153,12 +176,15 @@
         <td>{{ cust.phoneNumber }}</td>
         <td>
           <a (click)="loadCustomerById(cust.id)"
-            ><i style="margin-left: 10px;" class="fa-regular fa-pen-to-square"></i
+            ><i
+              style="margin-left: 10px"
+              class="fa-regular fa-pen-to-square"
+            ></i
           ></a>
         </td>
         <td>
           <a (click)="openModel(cust.id)"
-            ><i style="margin-left: 19px;" class="fa-solid fa-trash-can"></i
+            ><i style="margin-left: 19px" class="fa-solid fa-trash-can"></i
           ></a>
         </td>
       </tr>

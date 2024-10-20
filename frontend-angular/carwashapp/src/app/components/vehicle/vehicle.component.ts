@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Vehicle } from './model/vehicle.model';
 import { VehicleService } from './service/vehicle/vehicle.service';
@@ -19,6 +19,8 @@ export class VehicleComponent implements OnInit {
   vehicles: Vehicle[] = [];
   protected paginator: number = 1;
   protected isVehicleEditing = false;
+  protected isSearchingVehicle = false;
+  @ViewChild('searchInputLicensePlateValue') licensePlateValue!: ElementRef;
 
   public vehicle: Vehicle = {
     id: 0,
@@ -63,6 +65,26 @@ export class VehicleComponent implements OnInit {
         error: () => {},
       });
     }
+  }
+
+  public loadVehicleInformationByPlate(): void {
+      this.vehicleService.getVehicleDataByPlate(this.vehicle.licensePlate).subscribe({
+        next: (data) => {
+          this.vehicle= data;
+          this.vehicles = [];
+          this.vehicles.push(data);
+        },
+        error: () => {
+          this.licensePlateValue.nativeElement.value = "Nenhum dado de veículo encontrado na busca"
+        },
+      });
+  }
+
+  public checkIfVehicleLicensePlateIsEmpty(licensePlate: string): void{
+    if (licensePlate == null || licensePlate == undefined || licensePlate == ""){
+      this.clearVehicleForm();
+      this.getAllVehicles();
+   }
   }
 
   private isPlateEmptyValue(): boolean {
@@ -146,7 +168,9 @@ export class VehicleComponent implements OnInit {
         } 
       },
       error: (error) => {
-        console.log('');
+        console.log(error);
+        this.clearVehicleForm();
+        alert('Não é possível salvar dados de veículo já existente')
       },
     });
   }

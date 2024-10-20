@@ -10,7 +10,7 @@ CREATE TABLE customer (
         id BIGINT NOT NULL AUTO_INCREMENT,
         brand VARCHAR(255) NOT NULL,
         color VARCHAR(255) NOT NULL,
-        license VARCHAR(255) NOT NULL,
+        license VARCHAR(255) UNIQUE NOT NULL,
         carModel VARCHAR(255) NOT NULL,
         customer_id BIGINT NOT NULL,
         PRIMARY KEY (id),

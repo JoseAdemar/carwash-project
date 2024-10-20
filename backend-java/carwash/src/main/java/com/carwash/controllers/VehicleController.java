@@ -38,8 +38,7 @@ public class VehicleController {
   }
 
   @GetMapping("/plate")
-  public ResponseEntity<VehicleReadDTO> findByLicensePlate(
-          @RequestParam(required = false) String plate) {
+  public ResponseEntity<VehicleReadDTO> findByLicensePlate(@RequestParam(required = true) String plate) {
     VehicleReadDTO vehicleReadDTO = vehicleService.findByLicensePlate(plate);
     return ResponseEntity.status(HttpStatus.OK).body(vehicleReadDTO);
   }

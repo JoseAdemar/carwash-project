@@ -5,3 +5,8 @@
 .vehicle-buttons .btn-secondary {
     margin-left: 10px;
 }
+
+.vehicle-buttons {
+    display: flex;
+    align-items: center;
+}
