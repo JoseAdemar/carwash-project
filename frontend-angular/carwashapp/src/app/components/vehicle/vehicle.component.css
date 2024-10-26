@@ -1,12 +1,31 @@
-.vehicle-form-table td i {
-    cursor: pointer;
+.vehicle__buttons {
+  display: flex;
 }
 
-.vehicle-buttons .btn-secondary {
-    margin-left: 10px;
+.vehicle__form__table__vehicle td a {
+  cursor: pointer;
 }
 
-.vehicle-buttons {
-    display: flex;
-    align-items: center;
+.vehicle__buttons__various button {
+  padding: 12px;
 }
+
+.vehicle__search__vehicles .bg-light {
+  background-color: transparent !important;
+}
+
+.vehicle__search__vehicles input {
+    padding: 14px;
+    margin-top: -10px;
+}
+
+.vehicle__search__vehicles button {
+    padding: 14px;
+    margin-top: -10px;
+}
+
+.set__color__text__red {
+  color: red;
+}
+
+

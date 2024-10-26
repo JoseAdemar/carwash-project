@@ -16,32 +16,16 @@ import { NgxPaginationModule } from 'ngx-pagination';
   styleUrl: './vehicle.component.css',
 })
 export class VehicleComponent implements OnInit {
-  vehicles: Vehicle[] = [];
+  protected vehicles: Vehicle[] = [];
   protected paginator: number = 1;
   protected isVehicleEditing = false;
   protected isSearchingVehicle = false;
   @ViewChild('searchInputLicensePlateValue') licensePlateValue!: ElementRef;
-
-  public vehicle: Vehicle = {
-    id: 0,
-    licensePlate: '',
-    brand: '',
-    carModel: '',
-    color: '',
-    customer: {
-      id: 0,
-      name: '',
-      email: '',
-      phoneNumber: '',
-    },
-  };
-
-  public customer: Customer = {
-    id: 0,
-    name: '',
-    email: '',
-    phoneNumber: '',
-  };
+  protected vehicle: Vehicle;
+  protected customer: Customer;
+  protected emptyInputMessage?: string;
+  protected errorMessageToSaveVehicle?: string;
+  
 
   ngOnInit(): void {
     this.loadVehicleInformation();
@@ -51,54 +35,58 @@ export class VehicleComponent implements OnInit {
   constructor(
     private vehicleService: VehicleService,
     private customerService: CustomerService
-  ) {}
+  ) {
+    this.vehicle = new Vehicle();
+    this.customer = new Customer();
+  }
 
-  public loadVehicleInformation(): void {
-    if (this.isPlateEmptyValue() && this.isVehicleEditing === false) {
+  protected loadVehicleInformation(): void {
+    if (!this.isPlateEmptyValue() && this.isVehicleEditing === false) {
       this.vehicleService.getVehicleData(this.vehicle.licensePlate).subscribe({
         next: (data) => {
-          this.vehicle.licensePlate = data.licensePlate;
-          this.vehicle.brand = data.brand;
-          this.vehicle.carModel = data.carModel;
-          this.vehicle.color = data.color;
+          this.vehicle = data;
         },
         error: () => {},
       });
     }
   }
 
-  public loadVehicleInformationByPlate(): void {
-      this.vehicleService.getVehicleDataByPlate(this.vehicle.licensePlate).subscribe({
+  protected loadVehicleInformationByPlate(): void {
+    this.vehicleService
+      .getVehicleDataByPlate(this.licensePlateValue.nativeElement.value)
+      .subscribe({
         next: (data) => {
-          this.vehicle= data;
+          this.vehicle = data;
           this.vehicles = [];
           this.vehicles.push(data);
         },
         error: () => {
-          this.licensePlateValue.nativeElement.value = "Nenhum dado de veículo encontrado na busca"
+          this.licensePlateValue.nativeElement.value = 'Nada encontrado';
+          this.licensePlateValue.nativeElement.style.color = 'orange';
         },
       });
   }
 
-  public checkIfVehicleLicensePlateIsEmpty(licensePlate: string): void{
-    if (licensePlate == null || licensePlate == undefined || licensePlate == ""){
+  protected checkIfVehicleLicensePlateIsEmpty(): void {
+    let licensePlate = this.licensePlateValue.nativeElement.value;
+    if (
+      licensePlate == null ||
+      licensePlate == undefined ||
+      licensePlate == ''
+    ) {
       this.clearVehicleForm();
       this.getAllVehicles();
-   }
+      this.resetMessageColorToSearchLicensePlate();
+    }
   }
 
   private isPlateEmptyValue(): boolean {
-    if (
-      this.vehicle.licensePlate !== '' ||
-      (this.vehicle.licensePlate !== null &&
-        this.vehicle.licensePlate.length > 4)
-    ) {
-      return true;
-    }
-    return false;
+    return (
+      this.vehicle.licensePlate == '' || this.vehicle.licensePlate.length <= 4
+    );
   }
 
-  findCustomerByCriteria() {
+  protected findCustomerByCriteria() {
     if (!this.isNameFiledEmpty()) {
       this.validarInputParametros();
       this.customerService
@@ -153,7 +141,8 @@ export class VehicleComponent implements OnInit {
     return false;
   }
 
-  saveVehicleData() {
+  protected saveVehicleData() {
+    this.setMessageEmptyField();
     this.addCustomerToVehicle();
     this.vehicleService.saveVehicleInformation(this.vehicle).subscribe({
       next: (data) => {
@@ -165,21 +154,18 @@ export class VehicleComponent implements OnInit {
           this.vehicle.customer = this.customer;
           this.clearVehicleForm();
           this.getAllVehicles();
-        } 
+        }
       },
       error: (error) => {
         console.log(error);
         this.clearVehicleForm();
-        alert('Não é possível salvar dados de veículo já existente')
+        this.errorMessageToSaveVehicle = 'Veículo já cadastrado no sistema'
       },
     });
   }
 
   private addCustomerToVehicle() {
-    this.vehicle.customer.id = this.customer.id;
-    this.vehicle.customer.name = this.customer.name;
-    this.vehicle.customer.email = this.customer.email;
-    this.vehicle.customer.phoneNumber = this.customer.phoneNumber;
+    this.vehicle.customer = this.customer;
   }
 
   private clearVehicleForm() {
@@ -193,35 +179,35 @@ export class VehicleComponent implements OnInit {
     this.vehicle.customer.phoneNumber = '';
   }
 
-  public getAllVehicles(){
+  private getAllVehicles() {
     this.vehicleService.getAllVehiclesInformation().subscribe({
       next: (data) => {
         if (data) {
           this.vehicles = data;
         }
-      }
-    })
-  }
-
-  public deleteVehicleById(id: number): void{
-    this.vehicleService.deleteVehicleById(id).subscribe({
-      next: () => {
-        this.getAllVehicles();
-      }
+      },
     });
   }
 
-  public updateDataVehicle(id: number, vehicle: Vehicle) {
+  protected deleteVehicleById(id: number): void {
+    this.vehicleService.deleteVehicleById(id).subscribe({
+      next: () => {
+        this.getAllVehicles();
+      },
+    });
+  }
+
+  protected updateDataVehicle(id: number, vehicle: Vehicle) {
     this.vehicleService.updateVehicleInformation(id, vehicle).subscribe({
       next: () => {
         this.getAllVehicles();
         this.clearVehicleForm();
         this.isVehicleEditing = false;
-      }
-    })
+      },
+    });
   }
 
-  public getVehicleByIdEdit(id: number){
+  protected getVehicleByIdEdit(id: number) {
     this.vehicleService.getVehicleById(id).subscribe({
       next: (data) => {
         this.vehicle.id = data.id;
@@ -231,16 +217,35 @@ export class VehicleComponent implements OnInit {
         this.vehicle.color = data.color;
         this.vehicle.customer = data.customer;
         this.isVehicleEditing = true;
-      }
+      },
     });
   }
 
-  public cancelChange() {
+  protected cancelChange() {
     this.vehicle = new Vehicle();
     this.vehicle.licensePlate = '';
-        this.vehicle.brand = '';
-        this.vehicle.carModel = '';
-        this.vehicle.color = '';
-        this.isVehicleEditing = false;
+    this.vehicle.brand = '';
+    this.vehicle.carModel = '';
+    this.vehicle.color = '';
+    this.isVehicleEditing = false;
+  }
+
+  private setMessageEmptyField(): void {
+    if (
+      this.vehicle.licensePlate === '' ||
+      this.vehicle.brand === '' ||
+      this.vehicle.carModel === ''
+    ) {
+      setTimeout(() => {
+        return (this.emptyInputMessage = '');
+      }, 6400);
+      this.emptyInputMessage = 'Campo obrigatório';
+    }
+  }
+
+  private resetMessageColorToSearchLicensePlate(): void {
+    if (this.licensePlateValue.nativeElement.value === '') {
+      this.licensePlateValue.nativeElement.style.color = '';
+    }
   }
 }
