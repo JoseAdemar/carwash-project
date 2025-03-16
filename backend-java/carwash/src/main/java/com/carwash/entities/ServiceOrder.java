@@ -1,12 +1,11 @@
 package com.carwash.entities;
 
+import com.carwash.controllers.dtos.ServiceOrderDto;
 import com.carwash.entities.enumerations.WashStatusEnum;
 import com.carwash.entities.enumerations.WashTypeEnum;
 
 import jakarta.persistence.*;
 
-import jakarta.validation.constraints.NotNull;
-import jdk.jfr.Timestamp;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.Builder;
@@ -18,7 +17,6 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Set;
 
 @Getter
 @Setter
@@ -50,7 +48,16 @@ public class ServiceOrder {
   private WashStatusEnum washStatus = WashStatusEnum.WASHING;
 
   @Enumerated(EnumType.STRING)
-  private WashTypeEnum washType;
+  private WashTypeEnum washType = WashTypeEnum.NORMAL;
 
   private BigDecimal price;
+
+  public ServiceOrder(ServiceOrderDto serviceOrderDto){
+    this.id = serviceOrderDto.id();
+    this.vehicles = serviceOrderDto.vehicles();
+    this.washStatus = serviceOrderDto.washStatus();
+    this.washType = serviceOrderDto.washType();
+    this.price = serviceOrderDto.price();
+    this.localDateTime = serviceOrderDto.localDateTime();
+  }
 }

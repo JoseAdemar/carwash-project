@@ -8,6 +8,7 @@
 
 .vehicle__buttons__various button {
   padding: 12px;
+  margin-right: 10px;
 }
 
 .vehicle__search__vehicles .bg-light {

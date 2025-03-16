@@ -24,3 +24,21 @@
   color: beige;
   padding-left: 12px;
 }
+
+.campos__form__plate__input {
+  display: flex;
+}
+
+.campos__form__group__plates button {
+  margin-left: 20px;
+  margin-right: 1px;
+  border: none;
+  background-color: rgb(78, 78, 235);
+  padding: 16px;
+  border-radius: 5px;
+  color: azure;
+}
+
+.campos__form__group__plates input {
+  padding: 16px;
+}

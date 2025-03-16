@@ -20,7 +20,8 @@ export class VehicleComponent implements OnInit {
   protected paginator: number = 1;
   protected isVehicleEditing = false;
   protected isSearchingVehicle = false;
-  @ViewChild('searchInputLicensePlateValue') licensePlateValue!: ElementRef;
+  @ViewChild('searchInputLicensePlateValue') licensePlateSearch!: ElementRef;
+  @ViewChild('checkIfLicensePlateIsEmpty') licensePlate!: ElementRef;
   protected vehicle: Vehicle;
   protected customer: Customer;
   protected emptyInputMessage?: string;
@@ -53,7 +54,7 @@ export class VehicleComponent implements OnInit {
 
   protected loadVehicleInformationByPlate(): void {
     this.vehicleService
-      .getVehicleDataByPlate(this.licensePlateValue.nativeElement.value)
+      .getVehicleDataByPlate(this.licensePlateSearch.nativeElement.value)
       .subscribe({
         next: (data) => {
           this.vehicle = data;
@@ -61,14 +62,14 @@ export class VehicleComponent implements OnInit {
           this.vehicles.push(data);
         },
         error: () => {
-          this.licensePlateValue.nativeElement.value = 'Nada encontrado';
-          this.licensePlateValue.nativeElement.style.color = 'orange';
+          this.licensePlateSearch.nativeElement.value = 'Nada encontrado';
+          this.licensePlateSearch.nativeElement.style.color = 'orange';
         },
       });
   }
 
   protected checkIfVehicleLicensePlateIsEmpty(): void {
-    let licensePlate = this.licensePlateValue.nativeElement.value;
+    let licensePlate = this.licensePlateSearch.nativeElement.value;
     if (
       licensePlate == null ||
       licensePlate == undefined ||
@@ -157,11 +158,24 @@ export class VehicleComponent implements OnInit {
         }
       },
       error: (error) => {
-        console.log(error);
-        this.clearVehicleForm();
-        this.errorMessageToSaveVehicle = 'Veículo já cadastrado no sistema'
+        this.validateVehicleAlreadySaved();
       },
     });
+  }
+
+  private validateVehicleAlreadySaved() {
+  
+    if (this.licensePlate.nativeElement.value !== '') {
+      this.errorMessageToSaveVehicle = 'Veículo já cadastrado no sistema';
+      this.clearErrorMessageAfterDelay();
+      this.clearVehicleForm();
+    }
+  }
+  
+  private clearErrorMessageAfterDelay() {
+    setTimeout(() => {
+      this.errorMessageToSaveVehicle = '';
+    }, 3000);
   }
 
   private addCustomerToVehicle() {
@@ -231,21 +245,19 @@ export class VehicleComponent implements OnInit {
   }
 
   private setMessageEmptyField(): void {
-    if (
-      this.vehicle.licensePlate === '' ||
-      this.vehicle.brand === '' ||
-      this.vehicle.carModel === ''
-    ) {
+      this.emptyInputMessage = 'Campo obrigatório';
+      this.clearInputMessageAfterDelay();
+    }
+  
+   private clearInputMessageAfterDelay() { if (this.vehicle) {
       setTimeout(() => {
         return (this.emptyInputMessage = '');
-      }, 6400);
-      this.emptyInputMessage = 'Campo obrigatório';
+      }, 6000);
     }
   }
-
   private resetMessageColorToSearchLicensePlate(): void {
-    if (this.licensePlateValue.nativeElement.value === '') {
-      this.licensePlateValue.nativeElement.style.color = '';
+    if (this.licensePlateSearch.nativeElement.value === '') {
+      this.licensePlateSearch.nativeElement.style.color = '';
     }
   }
 }

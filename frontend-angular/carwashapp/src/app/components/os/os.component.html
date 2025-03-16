@@ -1,76 +1,55 @@
 <div class="titulo-os">
   <h5>Tela cadastro de OS</h5>
-
-  <div class="campos-form">
-    <div class="row">
-      <div class="col-md-6 col-sm-12">
-        <div class="form-floating mb-3">
-          <input type="placa" class="form-control" id="floatingInput" placeholder="placa" />
-          <label for="floatingInput">Cliente</label>
-        </div>
-      </div>
-      <div class="col-md-6 col-sm-12">
-        <div class="form-floating mb-3">
-          <input type="placa" class="form-control" id="floatingInput" placeholder="placa" />
-          <label for="floatingInput">Telefone</label>
-        </div>
-      </div>
-    </div>
-    <div class="list-group">
-      <label class="carro-descricao" for="descricao">Carro</label>
-      <label class="list-group-item">
-        <input class="form-check-input me-1" type="checkbox" value="">
-        First checkbox
-      </label>
-      <label class="list-group-item">
-        <input class="form-check-input me-1" type="checkbox" value="">
-        Second checkbox
-      </label>
-      <label class="list-group-item">
-        <input class="form-check-input me-1" type="checkbox" value="">
-        Third checkbox
-      </label>
-      <label class="list-group-item">
-        <input class="form-check-input me-1" type="checkbox" value="">
-        Fourth checkbox
-      </label>
-      <label class="list-group-item">
-        <input class="form-check-input me-1" type="checkbox" value="">
-        Fifth checkbox
-      </label>
-    </div>
-    <div class="selecoes">
-      <div class="row">
-        <div class="col-md-3 col-sm-12">
-          <select class="form-select" aria-label="Default select example">
-            <option selected>Tipo de lavagem</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-          </select>
-        </div>
-        <div class="col-md-3 col-sm-12">
-          <select class="form-select" aria-label="Default select example">
-            <option selected>Status O.S</option>
-            <option value="1">One</option>
-            <option value="2">Two</option>
-            <option value="3">Three</option>
-          </select>
-        </div>
-        <div class="col-md-3 col-sm-12 valor-data">
-          <div class="form-floating mb-3">
-            <input type="placa" class="form-control" id="floatingInput" placeholder="placa" />
-            <label for="floatingInput">Valor</label>
+  <form (ngSubmit)="createServiceOrder()">
+    <div class="campos__form">
+      <div class="campos__form__group__plates">
+        <div class="row">
+          <div class="col-md-3 col-sm-12">
+            <div class="form-floating mb-3">
+              <div class="campos__form__plate__input">
+                <input type="text" class="form-control" id="placa" placeholder="Placa"
+                [(ngModel)]="this.serviceOrderModel.vehicles[0].licensePlate" name="this.serviceOrderModel.vehicles[0].licensePlate" />
+              </div>
+            </div>
           </div>
-        </div>
-        <div class="col-md-3 col-sm-12 valor-data">
-          <div class="form-floating mb-3">
-            <input type="placa" class="form-control" id="floatingInput" placeholder="placa" />
-            <label for="floatingInput">Data</label>
+          <div class="col-md-9 col-sm-12">
+            <div class="form-floating mb-3">
+              <input type="placa" class="form-control" id="floatingInput" placeholder="Cliente" />
+              <label for="cliente">Cliente</label>
+            </div>
           </div>
         </div>
       </div>
-      <button type="button" class="btn btn-primary">Cadastrar</button>
+      <div class="selecoes">
+        <div class="row">
+          <div class="col-md-3 col-sm-12">
+            <label for="selectOption">Tipo da lavagem:</label>
+            <select [(ngModel)]="this.serviceOrderModel.washType" name="this.serviceOrderModel.washType" class="form-select" aria-label="Default select example">
+              <option selected disabled></option>
+              <option *ngFor="let washTypeStatus of washTypeServiceOrderEnum | keyvalue" [value]="washTypeStatus.value">
+                {{ washTypeStatus.value }} 
+              </option>
+            </select>
+          </div>
+          <div class="col-md-3 col-sm-12">
+            <label for="selectOption">Status O.S:</label>
+            <select [(ngModel)]="this.serviceOrderModel.washStatus" name="this.serviceOrderModel.washStatus" class="form-select" aria-label="Default select example">
+              <option selected disabled></option>
+              <option *ngFor="let washTypeStatus of washTypeEnum | keyvalue" [value]="washTypeStatus.value">
+                {{ washTypeStatus.value }} 
+              </option>
+            </select>
+          </div>
+          <div class="col-md-3 col-sm-12 valor-data">
+            <div class="form-floating mb-3">
+              <input type="number" class="form-control" id="valor" placeholder="valor"
+              [(ngModel)]="this.serviceOrderModel.price" name="this.serviceOrderModel.price" />
+              <label for="floatingInput">Valor</label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary">Cadastrar</button>
     </div>
-  </div>
+  </form>
 </div>
