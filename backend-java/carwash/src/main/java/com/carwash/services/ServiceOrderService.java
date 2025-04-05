@@ -137,6 +137,15 @@ public class ServiceOrderService {
     }
     return dtoList;
   }
+
+  public void updateWashStatusToFinished(Long id) {
+    ServiceOrder serviceOrder = serviceOrderRepository.findById(id).orElseThrow(() ->
+            new ResourceNotFoundException("Ordem de serviço com ID " + id + " não encontrada"));
+    serviceOrder.setWashStatus(WashStatusEnum.FINISHED);
+
+    serviceOrderRepository.save(serviceOrder);
+
+  }
 }
 
 

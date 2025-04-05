@@ -42,3 +42,7 @@
 .campos__form__group__plates input {
   padding: 16px;
 }
+
+.fa-pen-to-square:hover {
+  cursor: pointer;
+}

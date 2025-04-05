@@ -50,6 +50,51 @@
         </div>
       </div>
       <button type="submit" class="btn btn-primary">Cadastrar</button>
+
+      <div class="order-service-form-table">
+        <table class="table mt-4">
+          <thead>
+            <tr>
+              <th>O.S</th>
+              <th>Placa</th>
+              <th>Modelo</th>
+              <th>Tipo</th>
+              <th>Status</th>
+              <th>Preco</th>
+              <th>Data</th>
+              <th>Cliente</th>
+              <th>Editar</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              *ngFor="
+                let os of serviceOrderDTO
+                  | paginate : { itemsPerPage: 3, currentPage: paginator }
+              "
+            >
+              <td>{{ os.serviceOrderId }}</td>
+              <td>{{ os.license }}</td>
+              <td>{{ os.carModel }}</td>
+              <td>{{ os.washType }}</td>
+              <td>{{ os.washStatus }}</td>
+              <td>{{ os.price }}</td>
+              <td>{{ os.date }}</td>
+              <td>{{ os.customerName }}</td>
+
+              <td>
+                <a 
+                  ><i (click)="updateWashStatusToFinished(os.serviceOrderId)"
+                    style="margin-left: 10px"
+                    class="fa-regular fa-pen-to-square"
+                  ></i
+                ></a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+        <pagination-controls (pageChange)="paginator = $event"></pagination-controls>
+      </div>
     </div>
   </form>
 </div>

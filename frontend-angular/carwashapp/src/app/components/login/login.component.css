@@ -2,11 +2,127 @@
     padding-bottom: 40px;
 }
 
-.acesso-login{
-    background: linear-gradient(135deg, rgb(31, 130, 163) 0%, rgb(100, 120, 200) 100%); 
-    padding:80px 40px 120px 40px ;
-    border-radius: 8px; 
+
+/* CSSS tela de login inicio*/
+/* Estilos gerais */
+.acesso-login {
+    background: linear-gradient(145deg, rgba(34, 34, 34, 0.85) 0%, rgba(58, 58, 58, 0.85) 100%); /* Gradiente suave em tons escuros */
+    padding: 40px 20px;
+    border-radius: 12px; /* Bordas arredondadas para um visual mais moderno */
+    box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1); /* Sombra suave e discreta */
+    width: 100%; /* Ajusta a largura para dispositivos pequenos */
+    max-width: 900px; /* Largura máxima para não ficar muito largo em telas grandes */
+    margin: auto; /* Centraliza o conteúdo */
+    text-align: center; /* Alinha os textos ao centro */
+    backdrop-filter: blur(8px); /* Filtro de desfoque para o fundo */
+    border: 1px solid rgba(255, 255, 255, 0.1); /* Bordas discretas */
+    box-sizing: border-box; /* Garantir que padding e borda sejam bem calculados */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Animações suaves ao passar o mouse */
 }
+
+/* Efeito hover */
+.acesso-login:hover {
+    transform: translateY(-5px); /* Suave elevação ao passar o mouse */
+    box-shadow: 0px 15px 30px rgba(0, 0, 0, 0.2); /* Sombra mais forte no hover */
+}
+
+/* Título */
+.acesso-login h1 {
+    font-family: 'Poppins', sans-serif; /* Fonte moderna */
+    font-size: 30px;
+    font-weight: 600;
+    color: #ffffff; /* Cor branca para contraste */
+    margin-bottom: 15px;
+}
+
+/* Texto de descrição */
+.acesso-login p {
+    font-family: 'Roboto', sans-serif;
+    font-size: 16px;
+    color: #f2f2f2; /* Texto mais suave para boa legibilidade */
+    margin-bottom: 30px;
+}
+
+/* Estilo do botão */
+.acesso-login button {
+    padding: 15px 30px;
+    font-size: 18px;
+    font-family: 'Poppins', sans-serif;
+    color: #fff;
+    background-color: #007BFF; /* Cor de fundo do botão (azul) */
+    border: none;
+    border-radius: 30px; /* Bordas arredondadas para o botão */
+    cursor: pointer;
+    transition: all 0.3s ease; /* Animação suave no hover */
+}
+
+/* Efeito hover do botão */
+.acesso-login button:hover {
+    background-color: #0056b3; /* Azul mais escuro no hover */
+    transform: translateY(-3px); /* Elevação leve ao passar o mouse */
+}
+
+/* Animação de fade-in do conteúdo */
+.acesso-login {
+    opacity: 0;
+    animation: fadeIn 0.8s forwards;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .acesso-login {
+        padding: 30px 15px; /* Menos espaçamento para telas menores */
+        width: 85%; /* A largura se adapta para telas menores */
+        max-width: 400px; /* Largura máxima mais compacta */
+    }
+
+    .acesso-login h1 {
+        font-size: 24px; /* Tamanho de fonte menor para dispositivos móveis */
+    }
+
+    .acesso-login p {
+        font-size: 14px; /* Texto menor para telas pequenas */
+    }
+
+    .acesso-login button {
+        font-size: 16px; /* Botão com fonte menor */
+        padding: 12px 25px; /* Ajuste no padding do botão */
+    }
+}
+
+@media (max-width: 480px) {
+    .acesso-login {
+        padding: 20px 10px; /* Ajuste do padding para telas muito pequenas */
+        width: 95%; /* Largura maior em telas pequenas */
+        max-width: 350px; /* Largura máxima bem compacta */
+    }
+
+    .acesso-login h1 {
+        font-size: 22px; /* Fontes menores em telas muito pequenas */
+    }
+
+    .acesso-login p {
+        font-size: 13px; /* Texto ainda menor em telas menores */
+    }
+
+    .acesso-login button {
+        font-size: 14px; /* Fonte do botão ainda menor */
+        padding: 10px 20px; /* Ajuste no padding do botão */
+    }
+}
+
+/* CSS tela de login fim*/
 
 .acesso-login .row {
     display: flex;
@@ -22,13 +138,13 @@
 
 .titulo-login{
     text-align: center;
-    color: rgb(14, 69, 248);
+    color: rgba(67, 68, 68, 0.712);
     font-family: 'Roboto', sans-serif;
 }
 
 .titulo-login i{
     font-size: 40px;
-    color: rgb(12, 96, 253);
+    color: rgb(136, 153, 153);
     padding-bottom: 20px;
 }
 .botoes-logar{
@@ -39,8 +155,9 @@
 
 .botoes-logar button{
     font-size: 20px; 
-    background-color: rgb(68, 105, 105);
+    background-color: rgb(78, 78, 78);
     opacity: 0.7;
+    border: none;
 }
 
 .botoes-logar button:hover{

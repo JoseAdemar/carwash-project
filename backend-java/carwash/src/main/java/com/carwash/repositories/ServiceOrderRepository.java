@@ -2,6 +2,7 @@ package com.carwash.repositories;
 
 import com.carwash.controllers.dtos.ServiceOrderVehicleDTO;
 import com.carwash.entities.ServiceOrder;
+import com.carwash.entities.enumerations.WashStatusEnum;
 import jakarta.persistence.Tuple;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -29,6 +30,8 @@ public interface ServiceOrderRepository extends JpaRepository<ServiceOrder, Long
           "   vehicle ON service_order_vehicle.vehicles_id = vehicle.id " +
           "INNER JOIN " +
           "   customer ON vehicle.customer_id = customer.id " +
-          "WHERE service_order.wash_status != 'FINALIZADO'", nativeQuery = true)
+          "WHERE service_order.wash_status != 'FINISHED'", nativeQuery = true)
   List<Tuple> findServiceOrdersWithDetails();
+
+  WashStatusEnum washStatus = WashStatusEnum.FINISHED;
 }

@@ -24,12 +24,6 @@ public class ServiceOrderController {
   @Autowired
   private ServiceOrderService serviceOrderService;
 
- /* @PostMapping
-  public ResponseEntity<?> saveServiceOrder(@RequestBody ServiceOrderDto serviceOrderDto) {
-      ServiceOrderDto dto = serviceOrderService.createServiceOrderDto(serviceOrderDto);
-      return ResponseEntity.status(HttpStatus.CREATED).body(dto);
-  }*/
-
   @GetMapping
   public ResponseEntity<?> findAllServiceOrder() {
     try {
@@ -74,9 +68,15 @@ public class ServiceOrderController {
   }
 
   @GetMapping("/service_order_details")
-  public ResponseEntity<List<ServiceOrderVehicleDTO>> getServiceOrderDetails(){
+  public ResponseEntity<List<ServiceOrderVehicleDTO>> getServiceOrderDetails() {
     List<ServiceOrderVehicleDTO> dtos = serviceOrderService.getServiceOrderDetails();
     return ResponseEntity.status(HttpStatus.OK).body(dtos);
+  }
+
+  @PatchMapping("/{id}/wash-status")
+  public ResponseEntity<Void> updateWashStatusToFinished(@PathVariable Long id) {
+    serviceOrderService.updateWashStatusToFinished(id);
+    return ResponseEntity.noContent().build();
   }
 }
 
